@@ -68,11 +68,10 @@ Left empty here: the chain wizard carries the step-01 URI forward.
 DOIs/URLs of datasets that ground the AIDA claim.
 
 The open flood maps the finding rests on (REACHOUT, Staccione and Pal 2024, CC BY 4.0;
-cited by the paper itself in Sect. 4.3.2 as a basis for transfer).
+cited by the paper itself in Sect. 4.3.2 as a basis for transfer). One URL per bullet line —
+`build-chain-draft` reads this field from bullets only.
 
-```
-https://doi.org/10.5281/zenodo.14035876
-```
+- https://doi.org/10.5281/zenodo.14035876
 
 <!-- field: publication -->
 ### Supported by other publications (text input, optional)
