@@ -52,6 +52,9 @@ The **original paper's** DOI (bare, starting `10.` — the form prepends `https:
 
 ### Location A — Hamburg, Germany (the original paper's study area)
 
+**Paper (shared `paper` field above):** `10.5194/nhess-26-2765-2026` — Vogelbacher et al. (2026),
+*A high-resolution framework for urban pluvial flood risk mapping*, NHESS 26, 2765–2783.
+
 `verify_quote` (2026-10-10): found, p. 1 (Abstract), match `normalized`, pdf sha256 `88121b0e…a7d5`.
 The paper does not name the city quarter of its worked example ("a city quarter in Hamburg",
 "a single statistical unit (neighbourhood) in Hamburg"), so the coverage is the city as the
