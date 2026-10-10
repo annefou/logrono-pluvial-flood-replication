@@ -13,8 +13,12 @@ hazard (and exposure) components of the risk framework, not social vulnerability
   "avenida de Burgos".
 - `event_date` is the day of the storm; `published` the article date (they differ when
   the article reports the previous evening).
-- `place_type`: street, road, junction, building, or `unclear` ("el Adarraga" —
-  2018-09-17 — could be a sports facility or a place name; to resolve before use).
+- `place_type`: street, road, junction, building, sports_facility.
+  "el Adarraga" (2018-09-17) is read as the Centro de Tecnificación Deportiva Javier
+  Adarraga (https://www.larioja.org/ctd-javier-adarraga/es). OpenStreetMap's only
+  "Adarraga" feature in Logroño is a car park on Paseo de Las Norias (42.47358 N,
+  2.45246 W; Nominatim, 2026-10-10) — an approximate location for the complex until
+  its address is confirmed.
 - `source_kind`: `press` = the article's own reporting; `social_media_embedded` = a
   post embedded in the article (weaker evidence; analyse separately).
 - Not yet geocoded; that is done in `notebooks/02_data_clean.py`.
