@@ -24,6 +24,8 @@
 # | Buildings | Spanish Cadastre, INSPIRE Buildings, municipality 26900 (Logroño), ATOM bulk download | CC BY 4.0 |
 # | Street area | Spanish Cadastre, INSPIRE Cadastral Parcels (cadastral zoning = urban blocks) | CC BY 4.0 |
 # | Social vulnerability | INE, Censo de Población y Viviendas 2021, indicators per sección censal + section boundaries (01/01/2021) | INE terms (reuse with attribution) |
+| Water mask | Copernicus EU-Hydro River Network Database v1.3, [10.2909/393359a7-7ebd-4a52-80ac-1a18d5f3db9c](https://doi.org/10.2909/393359a7-7ebd-4a52-80ac-1a18d5f3db9c) — river surfaces and inland water | Copernicus (free, full and open) |
+| Streets (robustness check) | Copernicus Urban Atlas 2018, FUA ES018L2 Logroño, [10.2909/9911fe21-57f6-46fb-ae26-d76e7bb6378f](https://doi.org/10.2909/9911fe21-57f6-46fb-ae26-d76e7bb6378f) | Copernicus (free, full and open) |
 #
 # Only the `Baseline` scenario is extracted from the REACHOUT archive (seven
 # return periods, ~44 MB of the 12.5 GB unzipped). The archive is checked against
@@ -31,6 +33,11 @@
 # regenerate their files over time, so the source log (`data/raw/sources.json`)
 # records each file's SHA-256 and the server's `Last-Modified` date — that is the
 # exact version this run used.
+#
+# The two Copernicus layers are queried from the EEA's public ArcGIS map services
+# over the municipality's extent (no login), returned in EPSG:25830. IGN's
+# hydrography services were unreachable on 2026-10-10 (timeouts / HTTP 504), so
+# EU-Hydro is the water source.
 #
 # Recorded flood impacts are curated by hand from press reports and versioned in
 # the repository (`data/impacts/`), not downloaded here.
@@ -70,6 +77,19 @@ WEB_SOURCES = [
 ]
 
 
+# Municipality extent (Cadastre zoning, EPSG:25830), used for the map-service queries.
+EXTENT_25830 = (537600, 4697500, 554120, 4707640)
+EEA = "https://image.discomap.eea.europa.eu/arcgis/rest/services"
+MAP_SERVICE_SOURCES = [
+    {"name": "euhydro_river_polygons", "doi": "10.2909/393359a7-7ebd-4a52-80ac-1a18d5f3db9c",
+     "layer": f"{EEA}/EUHydro/EUHydro_RiverNetworkDatabase/MapServer/19", "where": "1=1"},
+    {"name": "euhydro_inland_water", "doi": "10.2909/393359a7-7ebd-4a52-80ac-1a18d5f3db9c",
+     "layer": f"{EEA}/EUHydro/EUHydro_RiverNetworkDatabase/MapServer/2", "where": "1=1"},
+    {"name": "urban_atlas_2018_logrono", "doi": "10.2909/9911fe21-57f6-46fb-ae26-d76e7bb6378f",
+     "layer": f"{EEA}/UrbanAtlas/UA_UrbanAtlas_2018/MapServer/2", "where": "fua_code='ES018L2'"},
+]
+
+
 # %%
 def _digest(path: Path, algo: str) -> str:
     h = hashlib.new(algo)
@@ -97,6 +117,27 @@ def extract(archive: Path, members, dest: Path) -> list[str]:
         for n in names:
             z.extract(n, dest)
     return names
+
+
+def query_layer(layer: str, where: str, out: Path, page: int = 1000) -> int:
+    """Page through an ArcGIS map-service layer over EXTENT_25830; write GeoJSON."""
+    params = {"where": where, "geometry": ",".join(map(str, EXTENT_25830)),
+              "geometryType": "esriGeometryEnvelope", "inSR": 25830, "outSR": 25830,
+              "outFields": "*", "orderByFields": "OBJECTID", "f": "geojson",
+              "resultRecordCount": page}
+    features, offset = [], 0
+    while True:
+        r = requests.get(f"{layer}/query", params={**params, "resultOffset": offset}, timeout=300)
+        r.raise_for_status()
+        batch = r.json()
+        features += batch["features"]
+        if len(batch["features"]) < page:
+            break
+        offset += page
+    collection = {"type": "FeatureCollection", "features": features,
+                  "crs": {"type": "name", "properties": {"name": "EPSG:25830"}}}
+    out.write_text(json.dumps(collection))
+    return len(features)
 
 
 # %% [markdown]
@@ -146,11 +187,24 @@ for src in WEB_SOURCES:
     print(f"{src['name']}: {rec['bytes']:,} bytes, Last-Modified {rec['last_modified']}")
 
 # %% [markdown]
+# ## Water mask and Urban Atlas (Copernicus, EEA map services)
+
+# %%
+service_log = []
+for src in MAP_SERVICE_SOURCES:
+    out = RAW_DIR / f"{src['name']}.geojson"
+    n = query_layer(src["layer"], src["where"], out)
+    service_log.append({**src, "extent_epsg25830": EXTENT_25830, "features": n,
+                        "file": out.name, "sha256": _digest(out, "sha256")})
+    print(f"{src['name']}: {n} features")
+
+# %% [markdown]
 # ## Source log
 
 # %%
 with open(RAW_DIR / "sources.json", "w") as f:
     json.dump({"accessed_on": datetime.date.today().isoformat(),
-               "hazard": hazard_log, "web": web_log}, f, indent=2)
+               "hazard": hazard_log, "web": web_log, "map_services": service_log}, f, indent=2)
 
-print(f"Logged 1 Zenodo record and {len(web_log)} web source(s) to {RAW_DIR / 'sources.json'}")
+print(f"Logged 1 Zenodo record, {len(web_log)} web source(s) and "
+      f"{len(service_log)} map-service layer(s) to {RAW_DIR / 'sources.json'}")
