@@ -38,8 +38,10 @@ rule data_download:
 rule data_clean:
     input:
         f"{DATA}/raw/sources.json",
+        f"{DATA}/impacts/logrono_events.csv",
+        f"{DATA}/impacts/osm_features.json",
     output:
-        f"{DATA}/clean/dataset.parquet",
+        f"{DATA}/interim/logrono.gpkg",
     shell:
         f"cd {{NOTEBOOKS}} && jupytext --to notebook --execute 02_data_clean.py"
 
@@ -47,7 +49,7 @@ rule data_clean:
 # ---------- 03: Analysis ----------
 rule analysis:
     input:
-        f"{DATA}/clean/dataset.parquet",
+        f"{DATA}/interim/logrono.gpkg",
     output:
         f"{RESULTS}/summary.csv",
     shell:
