@@ -1,19 +1,36 @@
 # Recorded flood impacts — Logroño
 
-`logrono_events.csv` lists places in Logroño where press reports describe pluvial
-flooding, one row per place and event. It is curated by hand and versioned here.
+Curated by hand from local press reports and versioned here (not downloaded).
+Reports say where water caused problems, not who was vulnerable: they test the
+hazard (and exposure) components of the risk framework, not social vulnerability.
 
-- `reported_impact_es` is copied **verbatim** from the source (Spanish), so every row
-  can be checked against it. Nothing is recorded that the source does not say.
+## `logrono_events.csv` — one row per place and event
+
+- `reported_impact_es` is copied **verbatim** from the source (Spanish); nothing is
+  recorded that the source does not say. Each quote was checked by string search
+  against the source text on `checked_on`. One normalisation: in the 2024-10-16
+  sentence, the PDF text extraction reads "avenidade Burgos"; recorded as
+  "avenida de Burgos".
+- `event_date` is the day of the storm; `published` the article date (they differ when
+  the article reports the previous evening).
+- `place_type`: street, road, junction, building, or `unclear` ("el Adarraga" —
+  2018-09-17 — could be a sports facility or a place name; to resolve before use).
 - `source_kind`: `press` = the article's own reporting; `social_media_embedded` = a
   post embedded in the article (weaker evidence; analyse separately).
-- `archived_url`: Wayback Machine copy, where one exists.
-- Locations are not yet geocoded; geocoding is done in `notebooks/02_data_clean.py`.
+- Not yet geocoded; that is done in `notebooks/02_data_clean.py`.
+- Wind damage reported in the same articles (terraces in Portales, a fallen tree in
+  calle Lope de Vega, 2018) is excluded: it is not flooding.
 
-Reports say where water caused problems, not who was vulnerable: they test the
-hazard (and exposure) components, not social vulnerability.
+## `logrono_event_rainfall.csv` — one row per event
 
-Coverage so far: 21 June 2023 only. nuevecuatrouno.com serves a Cloudflare challenge
-to scripted clients, and the other articles listed in `DISCOVERY.md` (2018-09-17,
-2021-09-01, 2023-09, 2024-09, 2024-10-17) have no Wayback copy; they still need to be
-read and recorded.
+Rainfall and incident counts as reported, for matching each event to a REACHOUT
+design storm (15-min events; Logroño RP2 9.79 … RP100 26.77 mm). `rain_reported_es`
+is verbatim (two figures in one article are separated by ` | `). Events without
+named places (2021-09-01, 2023-09-01, 2024-09-21) appear only here.
+
+## Sources
+
+nuevecuatrouno.com articles serve a Cloudflare challenge to scripted clients; they
+were read from PDF prints of the web pages (2026-10-10) that are **not** redistributed
+in this repository (copyright). The 2023-06-21 article was read from its Wayback
+Machine copy (`archived_url`), and Infobae (2023-06-22) directly.
