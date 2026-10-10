@@ -1,5 +1,10 @@
 # 10 — Proposal: geographic coverage of a replication's own study area
 
+**Update 2026-10-10:** after the v0.1.0 release, Logroño's coverage can be published with the
+existing template by citing the replication's own Zenodo DOI and quoting its description (see
+`09_geo_coverage.md`, Location B). The proposal below remains useful for chains without a
+citable release.
+
 Not a draft of an existing template: a **proposal** for a Science Live template, written
 2026-10-10 because the existing "Document geographical coverage" template cannot express
 this replication's study area honestly (see `09_geo_coverage.md`).

@@ -1,0 +1,28 @@
+{
+  "name": "logrono",
+  "source": "OpenStreetMap relation 340516 (Logroño, La Rioja, España)",
+  "osm_url": "https://www.openstreetmap.org/relation/340516",
+  "retrieved_via": "https://nominatim.openstreetmap.org/lookup?osm_ids=R340516&polygon_geojson=1",
+  "retrieved_on": "2026-10-10",
+  "license": "ODbL-1.0",
+  "parts_in_boundary": 1,
+  "kept": "largest part (mainland)",
+  "simplification_m": 100,
+  "max_chars": 1500,
+  "holes": "dropped",
+  "metric_crs": "EPSG:25830",
+  "decimals": 4,
+  "area_km2_full_boundary": 79.0,
+  "area_km2_kept": 79.0,
+  "area_km2_simplified": 78.9,
+  "area_difference_pct": -0.08,
+  "vertices": 61,
+  "wkt_chars": 1029,
+  "bounds_lon_lat": [
+    -2.5423,
+    42.4289,
+    -2.3422,
+    42.5197
+  ],
+  "wkt_sha256": "99415f9fe6e1d11bcea6455424c82744c2a7504d74221c633204187dd97ce4bf"
+}
