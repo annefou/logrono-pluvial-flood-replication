@@ -35,3 +35,9 @@ https://platform.sciencelive4all.org/np/?uri=<full-URI>
 - Drafts: `nanopubs/drafts/`
 - Form structure: `docs/forrt-form-fields.md`
 - Chain shape decision: `docs/chain-decision-tree.md`
+
+## Geographical coverage (standalone, not a chain step)
+
+| Location | URI | Published | Status |
+|---|---|---|---|
+| Hamburg, Germany (paper's area) | https://w3id.org/sciencelive/np/RAXrw7VYNnaHeaIrX4hJsOCJ7Aqy17nbt77LRzP9WOQWc | 2026-10-10 | **To be replaced**: geometry is the location search's bounding box (10,300 km², includes the Wadden Sea exclave and Lower Saxony); republish with the WKT in `nanopubs/drafts/09_geo_coverage.md`, then retract this one with the CLI (needs the signing key) |

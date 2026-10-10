@@ -1,0 +1,28 @@
+{
+  "name": "hamburg",
+  "source": "OpenStreetMap relation 62782 (Hamburg, Deutschland)",
+  "osm_url": "https://www.openstreetmap.org/relation/62782",
+  "retrieved_via": "https://nominatim.openstreetmap.org/lookup?osm_ids=R62782&polygon_geojson=1",
+  "retrieved_on": "2026-10-10",
+  "license": "ODbL-1.0",
+  "parts_in_boundary": 3,
+  "kept": "largest part (mainland)",
+  "simplification_m": 400,
+  "max_chars": 1500,
+  "holes": "dropped",
+  "metric_crs": "EPSG:32632",
+  "decimals": 4,
+  "area_km2_full_boundary": 980.2,
+  "area_km2_kept": 746.9,
+  "area_km2_simplified": 745.2,
+  "area_difference_pct": -0.24,
+  "vertices": 88,
+  "wkt_chars": 1448,
+  "bounds_lon_lat": [
+    9.7301,
+    53.3961,
+    10.3253,
+    53.7393
+  ],
+  "wkt_sha256": "28fe6b357136f6364ae151f508bd91d9053a0eda0e8f4bd6287c968e02e56ba2"
+}
