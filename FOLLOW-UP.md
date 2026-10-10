@@ -1,5 +1,7 @@
 # FOLLOW-UP — climate change and adaptation scenarios for Logroño
 
+**Created 2026-10-10:** [annefou/logrono-flood-adaptation-scenarios](https://github.com/annefou/logrono-flood-adaptation-scenarios) — its `DISCOVERY.md` carries this plan forward (method library pinned at building-climate-risk v0.2.1).
+
 Written 2026-10-10, at the end of Phase 3 of this replication. It is the handoff for
 a **separate repository** (create it from `forrt-replication-template`; this file then
 becomes its `DISCOVERY.md`). Everything below was checked in this session; re-verify
