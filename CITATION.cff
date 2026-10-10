@@ -10,7 +10,7 @@ authors:
   affiliation: "LifeWatch ERIC"
 repository-code: "https://github.com/annefou/logrono-pluvial-flood-replication"
 license: MIT
-version: "0.1.0"
+version: "0.1.1"
 date-released: "2026-10-10"
 # Identifiers below are recorded AUTOMATICALLY on each release by
 # .github/workflows/release-identifiers.yml — don't fill them in by hand.

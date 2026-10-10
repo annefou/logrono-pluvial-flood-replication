@@ -3,7 +3,7 @@
   "@type": "SoftwareSourceCode",
   "name": "Logroño replication of Vogelbacher et al. (2026): building-level pluvial flood risk with open data",
   "description": "FORRT replication of Vogelbacher et al. (2026, NHESS) in Logroño, Spain: building-level urban pluvial flood risk with open Spanish data (REACHOUT flood maps, Cadastre, INE census), compared with recorded flood impacts.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dateCreated": "2026-10-10",
   "dateModified": "2026-10-10",
   "license": "https://spdx.org/licenses/MIT",
