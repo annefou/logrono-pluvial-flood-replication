@@ -43,11 +43,11 @@ Paper and method: Anastasia Vogelbacher, Malte von Szombathely, Marc Lennartz, B
 
 ## Nanopublication chain
 
-The FORRT chain (Quote → AIDA → Claim → Replication Study → Outcome → CiTO) is drafted in [`nanopubs/drafts/`](nanopubs/README.md); once published, its URIs are listed in [`nanopubs/PUBLISHED.md`](nanopubs/PUBLISHED.md). The paper's geographical coverage is already published: [Hamburg, Germany](https://w3id.org/sciencelive/np/RA1NTaGnBgz1AFkx-Xbpl8FLq16t6wINM-XyP4PrsXnK8) (mainland outline from OpenStreetMap). Logroño's own study area needs a template for a replication's study area, which is proposed in `nanopubs/drafts/10_replication_area_proposal.md`. Climate-change and adaptation scenarios for Logroño are planned in a separate repository ([`FOLLOW-UP.md`](FOLLOW-UP.md)).
+The FORRT chain (Quote → AIDA → Claim → Replication Study → Outcome → CiTO) is drafted in [`nanopubs/drafts/`](nanopubs/README.md); once published, its URIs are listed in [`nanopubs/PUBLISHED.md`](nanopubs/PUBLISHED.md). The paper's geographical coverage is already published: [Hamburg, Germany](https://w3id.org/sciencelive/np/RA1NTaGnBgz1AFkx-Xbpl8FLq16t6wINM-XyP4PrsXnK8) (mainland outline from OpenStreetMap). Logroño, this replication's study area, is published too: [Logroño, La Rioja, Spain](https://w3id.org/sciencelive/np/RAzds1z9t2ac7XFvx_Hsv18__p5nUTNA0NHIsskSyLVPQ) (municipal boundary from OpenStreetMap). Climate-change and adaptation scenarios for Logroño are planned in a separate repository ([`FOLLOW-UP.md`](FOLLOW-UP.md)).
 
 ## Citation
 
 If you use this work, please cite both:
 
-- This software: [`CITATION.cff`](CITATION.cff) → DOI [10.5281/zenodo.23284600](https://doi.org/10.5281/zenodo.23284600) (v0.1.0: [10.5281/zenodo.23284601](https://doi.org/10.5281/zenodo.23284601)).
+- This software: [`CITATION.cff`](CITATION.cff) → DOI [10.5281/zenodo.23284600](https://doi.org/10.5281/zenodo.23284600) (v0.1.1: [10.5281/zenodo.23285198](https://doi.org/10.5281/zenodo.23285198)).
 - The original paper: [10.5194/nhess-26-2765-2026](https://doi.org/10.5194/nhess-26-2765-2026).

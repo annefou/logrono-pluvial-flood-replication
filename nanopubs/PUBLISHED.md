@@ -38,10 +38,11 @@ https://platform.sciencelive4all.org/np/?uri=<full-URI>
 
 ## Geographical coverage (standalone, not a chain step)
 
-The original paper's study area (subject: doi:10.5194/nhess-26-2765-2026), published with the
-"Document geographical coverage" template.
+Published with the "Document geographical coverage" template: the original paper's study area
+(subject: doi:10.5194/nhess-26-2765-2026) and this replication's own (subject: its v0.1.0 release).
 
 | Location | URI | Published | Status |
 |---|---|---|---|
 | Hamburg, Germany (mainland; WKT from OSM relation 62782 via `scripts/geo_coverage_wkt.py`, 745.2 km²) | https://w3id.org/sciencelive/np/RA1NTaGnBgz1AFkx-Xbpl8FLq16t6wINM-XyP4PrsXnK8 | 2026-10-10 | **current** — checked: content matches the draft, WKT identical to `nanopubs/geo/hamburg.wkt` |
+| Logroño, La Rioja, Spain (this replication's study area; cited work = release v0.1.0, 10.5281/zenodo.23284601; WKT from OSM relation 340516, 78.9 km²) | https://w3id.org/sciencelive/np/RAzds1z9t2ac7XFvx_Hsv18__p5nUTNA0NHIsskSyLVPQ | 2026-10-10 | **current** — checked: DOI, quote (verbatim in the Zenodo description) and comment match the draft, WKT identical to `nanopubs/geo/logrono.wkt`; short ID `city`, label "Logroño" |
 | Hamburg, Germany (first attempt) | https://w3id.org/sciencelive/np/RAXrw7VYNnaHeaIrX4hJsOCJ7Aqy17nbt77LRzP9WOQWc | 2026-10-10 | **superseded; disapproved by the author** (https://w3id.org/np/RA6ME0ZiWgCCxdZTHq6qZoO3PsemLCJ1_g7p_vsNJqysw, Nanodash, 2026-10-10: "The area for Hamburg is far too large and it is misleading.") — geometry is the location search's bounding box (10,300 km², incl. the Wadden Sea exclave); a retraction would need the original signing key |
