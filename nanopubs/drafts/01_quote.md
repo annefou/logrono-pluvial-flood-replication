@@ -30,15 +30,15 @@ Format: starts with `10.` — bare DOI, **NOT** `https://doi.org/...` form.
 <!-- field: quotation -->
 ### The exact quotation from the paper (max. 500 characters) (textarea, required)
 
-Verbatim from the paper PDF in `paper/`. Character-for-character. ≤ 500 chars in whole-text mode.
-
-> _Read the PDF first. Don't paraphrase from memory. See `docs/verify-before-drafting.md`._
-
-```
+Verbatim from `paper/vogelbacher-2026.pdf`, p. 15 (Sect. 6, Conclusions and outlook).
+`verify_quote` → found, match `normalized` (whitespace / line-break hyphenation only),
+pdf sha256 `88121b0e…a7d5`.
 
 ```
+This finer level of granularity has the potential to significantly enhance the accuracy of urban risk assessments and support decision-making regarding disaster risk management and climate adaptation.
+```
 
-Character count: ___ / 500.
+Character count: 200 / 500.
 
 <!-- field: quotation-end -->
 ### End of quotation (optional - use when quoting beginning and end of a longer passage, max. 500 characters) (textarea, optional)
@@ -54,11 +54,13 @@ phrase here. Leave empty for a single short quote.
 <!-- field: comment -->
 ### Our interpretation and explanation of why this quotation is relevant (max. 800 characters) (textarea, required)
 
-Why this quote matters and what the replication tests. Connect the paper's claim to the work this repo does. Don't repeat the quote.
+Standalone interpretation (true independently of this replication); live form caps at 500 chars.
 
 ```
-
+The authors present building-level resolution as a route to more accurate urban flood risk assessment, but the paper gives no quantitative check against observed flooding: Sect. 4.3.1 only compares the design storm qualitatively with two Hamburg events, and the worked example uses synthetic building data. The accuracy gain is therefore stated as a potential; it can be tested wherever flood impacts have been recorded.
 ```
+
+Character count: 420 / 500.
 
 ## Publication note
 
