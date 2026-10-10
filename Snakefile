@@ -63,7 +63,10 @@ rule analysis:
 rule figures:
     input:
         f"{RESULTS}/impact_test.csv",
+        f"{RESULTS}/impact_test_return_periods.csv",
+        f"{RESULTS}/logrono_risk.gpkg",
     output:
         f"{FIGURES}/main_result.png",
+        f"{FIGURES}/risk_maps.png",
     shell:
         f"cd {{NOTEBOOKS}} && jupytext --to notebook --execute 04_figures.py"
