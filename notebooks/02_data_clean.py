@@ -29,6 +29,7 @@
 # | `streets_urban_atlas` | Urban Atlas 2018 | road classes, minus water — robustness check only (§3) |
 # | `water` | Urban Atlas 2018 class 50000 | river and water bodies; checked against EU-Hydro for alignment with REACHOUT (§4) |
 # | `flood_rp100_{30..100}` | REACHOUT Baseline RP100 | depth ≥ threshold, polygonised on the native grid, minus water (§4) |
+# | `flood_rp{2,5,10,25,50,200}_30` | REACHOUT Baseline, other return periods | depth ≥ 30 cm, same rule — sensitivity of the impact test (§4) |
 # | `impact_places` | press reports + Cadastre addresses + OSM | one geometry per reported place (§5) |
 #
 # Deviations from the paper introduced here are listed at the end (§6).
@@ -276,11 +277,22 @@ water_check = pd.DataFrame(water_check)
 print(water_check.round(3).to_string(index=False))
 assert water_check.iloc[0]["best_shift_m"] == (0, 0) and water_check.iloc[0]["channel_covered"] > 0.7
 
-floods = {d: gpd.GeoSeries(g.difference(water_geom), crs=CRS).explode(index_parts=False)
-          for d, g in floods.items()}
-floods = {d: g[~g.is_empty] for d, g in floods.items()}
+def without_water(g: gpd.GeoSeries) -> gpd.GeoSeries:
+    g = gpd.GeoSeries(g.difference(water_geom), crs=CRS).explode(index_parts=False)
+    return g[~g.is_empty]
+
+
+floods = {d: without_water(g) for d, g in floods.items()}
 for d, g in floods.items():
     print(f"depth ≥ {d} cm: {len(g):,} polygons, {g.area.sum() / 1e6:.3f} km²")
+
+# Other return periods, at the 30 cm threshold only — for the sensitivity of the impact
+# comparison to the design storm (recorded events span roughly RP10 to beyond RP100).
+OTHER_RPS = ["A_RP2", "B_RP5", "C_RP10", "D_RP25", "E_RP50", "G_RP200"]
+floods_rp30 = {rp: without_water(flood_polygons(RAW / f"reachout/Logrono/Baseline/{rp}.tif", extent, [30])[30])
+               for rp in OTHER_RPS}
+for rp, g in floods_rp30.items():
+    print(f"{rp}, depth ≥ 30 cm: {g.area.sum() / 1e6:.3f} km²")
 
 # %% [markdown]
 # ## 5. Impact places
@@ -397,6 +409,8 @@ write(gpd.GeoDataFrame(geometry=[streets_ua], crs=CRS), "streets_urban_atlas")
 write(gpd.GeoDataFrame(geometry=[water_geom], crs=CRS), "water")
 for d, g in floods.items():
     write(gpd.GeoDataFrame(geometry=g.values, crs=CRS), f"flood_rp100_{d}")
+for rp, g in floods_rp30.items():
+    write(gpd.GeoDataFrame(geometry=g.values, crs=CRS), f"flood_{rp.split('_')[1].lower()}_30")
 write(impact_places, "impact_places")
 
 # %% [markdown]
