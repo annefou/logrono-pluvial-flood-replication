@@ -212,9 +212,9 @@ print(f"buildings in the urban area: {int(b['in_urban_area'].sum()):,} of {len(b
 # EU-Hydro (river surfaces + inland water, which together hold this reach of the Ebro)
 # both line up with no shift and cover about the same share; EU-Hydro's river-surface
 # layer alone does not. Urban Atlas is used (one product, also used for the road
-# robustness check). REACHOUT itself lines up
-# with the Cadastre (water ≥ 30 cm is ~3× rarer inside footprints than outside, and any
-# shift of 4 m or more makes that worse).
+# robustness check). REACHOUT itself lines up with the Cadastre: the first check shows
+# water is rarer inside building footprints than outside them, and least so with no shift
+# (the footprint test is computed on the native grid, footprints transformed to EPSG:32632).
 
 # %%
 def flood_polygons(tif: Path, extent_25830: Polygon, depths_cm: list[int]) -> dict[int, gpd.GeoSeries]:
@@ -234,6 +234,32 @@ def flood_polygons(tif: Path, extent_25830: Polygon, depths_cm: list[int]) -> di
 
 extent = urban.buffer(HAZARD_MARGIN_M + 30).envelope
 floods = flood_polygons(RAW / f"reachout/Logrono/Baseline/{RETURN_PERIOD}.tif", extent, DEPTHS_CM)
+
+def footprint_alignment(tif: Path, footprints: gpd.GeoSeries,
+                        shifts: list[tuple[int, int]]) -> pd.DataFrame:
+    """Share of wet / >= 30 cm cells inside vs outside footprints, on the native grid."""
+    with rasterio.open(tif) as src:
+        fp = footprints.to_crs(src.crs)
+        win = rasterio.windows.from_bounds(*fp.total_bounds, transform=src.transform)
+        win = win.round_offsets().round_lengths()
+        depth = src.read(1, window=win, masked=True).filled(0)
+        transform = src.window_transform(win)
+    rows = []
+    for dx, dy in shifts:
+        inside = rasterio.features.rasterize(
+            ((g, 1) for g in fp.translate(dx, dy)), out_shape=depth.shape,
+            transform=transform, dtype="uint8").astype(bool)
+        rows.append({"shift_m": (dx, dy), "wet_inside": (depth[inside] > 0).mean(),
+                     "wet_outside": (depth[~inside] > 0).mean(),
+                     "deep_inside": (depth[inside] >= 0.3).mean(),
+                     "deep_outside": (depth[~inside] >= 0.3).mean()})
+    return pd.DataFrame(rows)
+
+
+alignment = footprint_alignment(RAW / f"reachout/Logrono/Baseline/{RETURN_PERIOD}.tif", b.geometry,
+                                [(0, 0), (4, 0), (-4, 0), (0, 4), (0, -4)])
+print(alignment.round(4).to_string(index=False))
+assert alignment["wet_inside"].idxmin() == 0, "REACHOUT and Cadastre footprints are misaligned"
 
 EBRO_WINDOW = shapely.box(543500, 4701500, 547600, 4703300)
 channel = shapely.union_all(floods[30].values).intersection(EBRO_WINDOW)
