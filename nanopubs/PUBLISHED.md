@@ -33,6 +33,20 @@ Full URIs, for copy-paste:
 06 citation https://w3id.org/sciencelive/np/RAoFYugT7OVk5eoHuxKCO9HeqA08jMfSn7TeUxwZcbezE
 ```
 
+## Verification (2026-10-10)
+
+`verify_chain` (forrt-research-mcp 0.1.2) against the **dev** API (`api-dev.sciencelive4all.org`; the
+production `/np/constellation` endpoint returned HTTP 500 to the tool at the time): **green — 11 pass, 0 fail**.
+All six steps enumerated in the constellation; the Outcome's repository resolves (release v0.1.1,
+10.5281/zenodo.23285198); cited targets resolve (the paper, building-climate-risk v0.2.0, the Hamburg Outcome).
+
+**Correction to one row.** The tool's `verdict-relation` row read "verdict Validated matches CiTO
+confirms" — that is the *Hamburg* chain's pair, reached through this chain's `extends` citation of the
+Hamburg Outcome. Read from the published TriG, this chain's Outcome is **PartiallySupported**
+(confidence Moderate) and its CiTO cites the paper with **qualifies** — the pair the tool's own rule
+requires. The CiTO carries all seven citations of the draft (qualifies, extends, usesDataFrom,
+citesAsDataSource ×3, credits).
+
 ## Optional layers
 
 | Step | Template | URI | Published |
