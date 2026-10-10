@@ -14,7 +14,6 @@ project:
     - file: notebooks/02_data_clean.ipynb
     - file: notebooks/03_analysis.ipynb
     - file: notebooks/04_figures.ipynb
-    - file: nanopubs/README.md
     - file: nanopubs/PUBLISHED.md
 site:
   title: "Building-level pluvial flood risk in Logroño — FORRT replication"

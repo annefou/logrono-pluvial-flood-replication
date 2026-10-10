@@ -6,19 +6,39 @@ This file is the canonical registry of published nanopub URIs for this replicati
 
 | Step | Template | URI | Published |
 |---|---|---|---|
-| 01 | Quote-with-comment (or PICO / PCC) | _not yet published_ | |
-| 02 | AIDA Sentence | _not yet published_ | |
-| 03 | FORRT Claim | _not yet published_ | |
-| 04 | FORRT Replication Study | _not yet published_ | |
-| 05 | FORRT Replication Outcome | _not yet published_ | |
-| 06 | CiTO Citation | _not yet published_ | |
+| 01 | Quote-with-comment | https://w3id.org/sciencelive/np/RAbgREdIegl6pbTP_E4E2Eg9JR28whinZDteeGueXg1Wc | 2026-10-10 |
+| 02 | AIDA Sentence | https://w3id.org/sciencelive/np/RAPjP2vEln1AzhH3QpkUK6lRB99xicwcRkdUp35bxk9U4 | 2026-10-10 |
+| 03 | FORRT Claim | https://w3id.org/sciencelive/np/RAQDtKtTjDH3tbUuBwmzk2mWYe7vyMKHMI1cquwB-Pltk | 2026-10-10 |
+| 04 | FORRT Replication Study | https://w3id.org/sciencelive/np/RABBJpiR9zQUaRlSclmmv5wvIJr8wWl_hyo-NBK2o10pI | 2026-10-10 |
+| 05 | FORRT Replication Outcome | https://w3id.org/sciencelive/np/RAzO2FoYqdwvPCDDkfVmf-SKOl2mUpsf_qZeje0i_LP_U | 2026-10-10 |
+| 06 | CiTO Citation | https://w3id.org/sciencelive/np/RAoFYugT7OVk5eoHuxKCO9HeqA08jMfSn7TeUxwZcbezE | 2026-10-10 |
+
+**Chain shape:** paper-rooted — Quote-with-comment → AIDA → FORRT Claim → Replication Study →
+Replication Outcome → CiTO Citation. Published 2026-10-10 through the Science Live chain wizard,
+from `nanopubs/chain-draft.json` at commit 3eca53a (built from release v0.1.1).
+
+**Outcome:** `partially supported`, confidence `moderate`; repository = release v0.1.1
+(https://doi.org/10.5281/zenodo.23285198). The CiTO relation to the original paper is `qualifies`;
+it `extends` the Hamburg reproduction chain (Outcome
+https://w3id.org/sciencelive/np/RA6V_jAy2OFjYBwQMOH92fIM6199bjez7hRkY90vkxx7U).
+
+Full URIs, for copy-paste:
+
+```
+01 quote    https://w3id.org/sciencelive/np/RAbgREdIegl6pbTP_E4E2Eg9JR28whinZDteeGueXg1Wc
+02 aida     https://w3id.org/sciencelive/np/RAPjP2vEln1AzhH3QpkUK6lRB99xicwcRkdUp35bxk9U4
+03 claim    https://w3id.org/sciencelive/np/RAQDtKtTjDH3tbUuBwmzk2mWYe7vyMKHMI1cquwB-Pltk
+04 study    https://w3id.org/sciencelive/np/RABBJpiR9zQUaRlSclmmv5wvIJr8wWl_hyo-NBK2o10pI
+05 outcome  https://w3id.org/sciencelive/np/RAzO2FoYqdwvPCDDkfVmf-SKOl2mUpsf_qZeje0i_LP_U
+06 citation https://w3id.org/sciencelive/np/RAoFYugT7OVk5eoHuxKCO9HeqA08jMfSn7TeUxwZcbezE
+```
 
 ## Optional layers
 
 | Step | Template | URI | Published |
 |---|---|---|---|
-| 07 | Research Software (if applicable) | _not applicable / not yet published_ | |
-| 08 | Research Synthesis (if applicable) | _not applicable / not yet published_ | |
+| 07 | Research Software (if applicable) | _not applicable here_ — the reusable tool is `building-climate-risk` (its own repository) | |
+| 08 | Research Synthesis (if applicable) | _not yet published_ — candidate: Hamburg reproduction + Logroño replication of the same paper | |
 
 ## Format
 
