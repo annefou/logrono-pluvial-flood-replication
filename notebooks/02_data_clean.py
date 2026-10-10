@@ -17,7 +17,7 @@
 # # 02 — Data clean
 #
 # Builds the inputs of the risk framework for Logroño, in the shape the method
-# library (`pfr-building-risk`) expects, and locates the recorded flood impacts.
+# library (`building-climate-risk`) expects, and locates the recorded flood impacts.
 # Everything is written to `data/interim/logrono.gpkg` (EPSG:25830, ETRS89 / UTM 30N —
 # the Cadastre's CRS; distances in ground metres).
 #
@@ -44,6 +44,7 @@ import pandas as pd
 import rasterio
 import rasterio.features
 import rasterio.windows
+import building_climate_risk as bcr
 import shapely
 from pyproj import Transformer
 from shapely.geometry import LineString, Polygon, shape
@@ -142,10 +143,8 @@ b["CUSEC"] = gpd.sjoin(points, sections[["CUSEC", "geometry"]], how="left",
                        predicate="within")["CUSEC"].values
 b = b.merge(sections.drop(columns="geometry"), on="CUSEC", how="left")
 
-dw_section = b.groupby("CUSEC")["dwellings"].transform("sum")
-b["R"] = np.where(b["dwellings"] > 0, b["pop"] * b["dwellings"] / dw_section, 0.0)
-residential = b["use"] == "1_residential"
-b["R_G"] = np.where(residential, b["R"] / b["floors"], 0.0)
+b["R"] = bcr.allocate(sections.set_index("CUSEC")["pop"], b["CUSEC"], b["dwellings"])
+b["R_G"] = bcr.residents_on_floor(b["R"], b["floors"], eligible=b["use"] == "1_residential")
 for ind_col in ["C", "ES", "WR", "WR_disab", "EDQ"]:
     b[ind_col] = b[f"{ind_col}_rate"] * b["R"]
 b = b.drop(columns=[c for c in b.columns if c.endswith("_rate")] + ["pop", "dwellings_census"])
