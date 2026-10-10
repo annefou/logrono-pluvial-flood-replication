@@ -18,8 +18,9 @@ hazard (and exposure) components of the risk framework, not social vulnerability
   Adarraga (https://www.larioja.org/ctd-javier-adarraga/es). OpenStreetMap's only
   "Adarraga" feature in Logroño is a car park on Paseo de Las Norias (42.47358 N,
   2.45246 W; Nominatim, 2026-10-10) — used as the approximate location of the complex.
-  Its identity as a sports complex was confirmed by Anne Fouilloux on Google Maps
-  (2026-10-10); Google Maps coordinates are not used (licence).
+  Address confirmed by Anne Fouilloux on Google Maps (2026-10-10): "Adarraga,
+  P.º de las Norias, 26006 Logroño, La Rioja" — the same street as the OSM car park
+  (OSM gives postcode 26002). Google Maps coordinates are not used (licence).
 - `source_kind`: `press` = the article's own reporting; `social_media_embedded` = a
   post embedded in the article (weaker evidence; analyse separately).
 - Not yet geocoded; that is done in `notebooks/02_data_clean.py`.
