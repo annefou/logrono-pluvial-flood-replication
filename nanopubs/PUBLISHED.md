@@ -38,6 +38,10 @@ https://platform.sciencelive4all.org/np/?uri=<full-URI>
 
 ## Geographical coverage (standalone, not a chain step)
 
+The original paper's study area (subject: doi:10.5194/nhess-26-2765-2026), published with the
+"Document geographical coverage" template.
+
 | Location | URI | Published | Status |
 |---|---|---|---|
-| Hamburg, Germany (paper's area) | https://w3id.org/sciencelive/np/RAXrw7VYNnaHeaIrX4hJsOCJ7Aqy17nbt77LRzP9WOQWc | 2026-10-10 | **To be replaced**: geometry is the location search's bounding box (10,300 km², includes the Wadden Sea exclave and Lower Saxony); republish with the WKT in `nanopubs/drafts/09_geo_coverage.md`, then retract this one with the CLI (needs the signing key) |
+| Hamburg, Germany (mainland; WKT from OSM relation 62782 via `scripts/geo_coverage_wkt.py`, 745.2 km²) | https://w3id.org/sciencelive/np/RA1NTaGnBgz1AFkx-Xbpl8FLq16t6wINM-XyP4PrsXnK8 | 2026-10-10 | **current** — checked: content matches the draft, WKT identical to `nanopubs/geo/hamburg.wkt` |
+| Hamburg, Germany (first attempt) | https://w3id.org/sciencelive/np/RAXrw7VYNnaHeaIrX4hJsOCJ7Aqy17nbt77LRzP9WOQWc | 2026-10-10 | **superseded, retraction pending** — geometry is the location search's bounding box (10,300 km², incl. the Wadden Sea exclave); retracting needs the original signing key, not available outside Science Live |
