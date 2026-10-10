@@ -14,7 +14,11 @@
 > **A high-resolution framework for urban pluvial flood risk mapping** — replication study.
 > Reference paper: [10.5194/nhess-26-2765-2026](https://doi.org/10.5194/nhess-26-2765-2026)
 
-This is a self-contained replication of the headline claim of the reference paper. It produces a reproducible computational pipeline, a Zenodo-archived release with a citable DOI, and a FORRT-tagged nanopublication chain on the [Science Live platform](https://platform.sciencelive4all.org).
+The paper's building-level flood risk framework, transferred to **Logroño (Spain) with open data only** (REACHOUT flood maps, Spanish Cadastre, INE 2021 census, Copernicus Urban Atlas), and its accuracy claim tested against the **places where storms caused flooding in 2018–2024**.
+
+**Result — partially supported.** Reported flood places rank at the 84th percentile of 512 streets by modelled flooding (p ≤ 0.0001), and street scale locates them better than census-section scale (84th vs 69th percentile, p = 0.010). The building-level risk indices agree only weakly, and social vulnerability cannot be tested with impact records (they say where water caused trouble, not who was affected). Details, figures and notebooks: **[the Jupyter Book](https://annefou.github.io/logrono-pluvial-flood-replication/)**.
+
+Risk is computed with [`building-climate-risk`](https://github.com/annefou/building-climate-risk) ([10.5281/zenodo.23282970](https://doi.org/10.5281/zenodo.23282970)), which reproduces the authors' Hamburg example ([Hamburg reproduction](https://github.com/annefou/hamburg-pluvial-flood-replication)). The pipeline, a Zenodo-archived release and a FORRT nanopublication chain on the [Science Live platform](https://platform.sciencelive4all.org) make the replication reproducible and citable.
 
 ---
 
