@@ -116,6 +116,20 @@ out geom tags;"""
 
 
 # %%
+def get_json(url: str, params: dict | None = None, attempts: int = 4) -> dict:
+    """GET a JSON API with retries: services occasionally answer with an error page."""
+    import time
+    for attempt in range(attempts):
+        try:
+            r = requests.get(url, params=params, timeout=300)
+            r.raise_for_status()
+            return r.json()
+        except (requests.RequestException, ValueError) as err:
+            if attempt == attempts - 1:
+                raise RuntimeError(f"{url}: no valid JSON after {attempts} attempts") from err
+            time.sleep(15 * (attempt + 1))
+
+
 def _digest(path: Path, algo: str) -> str:
     h = hashlib.new(algo)
     with open(path, "rb") as f:
@@ -152,9 +166,7 @@ def query_layer(layer: str, where: str, out: Path, page: int = 1000) -> int:
               "resultRecordCount": page}
     features, offset = [], 0
     while True:
-        r = requests.get(f"{layer}/query", params={**params, "resultOffset": offset}, timeout=300)
-        r.raise_for_status()
-        batch = r.json()
+        batch = get_json(f"{layer}/query", params={**params, "resultOffset": offset})
         features += batch["features"]
         if len(batch["features"]) < page:
             break
@@ -185,7 +197,7 @@ def overpass(query: str, attempts: int = 3) -> dict:
 # ## Hazard — REACHOUT (Zenodo, MD5-verified)
 
 # %%
-record = requests.get(f"https://zenodo.org/api/records/{REACHOUT['record']}", timeout=60).json()
+record = get_json(f"https://zenodo.org/api/records/{REACHOUT['record']}")
 entry = next(f for f in record["files"] if f["key"] == REACHOUT["file"])
 algo, expected = entry["checksum"].split(":", 1)
 archive = RAW_DIR / REACHOUT["file"]
