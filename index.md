@@ -39,7 +39,7 @@ Paper and method: Anastasia Vogelbacher, Malte von Szombathely, Marc Lennartz, B
 
 ## Nanopublication chain
 
-The FORRT chain (Quote → AIDA → Claim → Replication Study → Outcome → CiTO) is drafted in [`nanopubs/drafts/`](nanopubs/README.md); once published, its URIs are listed in [`nanopubs/PUBLISHED.md`](nanopubs/PUBLISHED.md). The paper's geographical coverage (Hamburg) is already published there. Climate-change and adaptation scenarios for Logroño are planned in a separate repository ([`FOLLOW-UP.md`](FOLLOW-UP.md)).
+The FORRT chain (Quote → AIDA → Claim → Replication Study → Outcome → CiTO) is drafted in [`nanopubs/drafts/`](nanopubs/README.md); once published, its URIs are listed in [`nanopubs/PUBLISHED.md`](nanopubs/PUBLISHED.md). The paper's geographical coverage is already published: [Hamburg, Germany](https://w3id.org/sciencelive/np/RA1NTaGnBgz1AFkx-Xbpl8FLq16t6wINM-XyP4PrsXnK8) (mainland outline from OpenStreetMap). Logroño's own study area needs a template for a replication's study area, which is proposed in `nanopubs/drafts/10_replication_area_proposal.md`. Climate-change and adaptation scenarios for Logroño are planned in a separate repository ([`FOLLOW-UP.md`](FOLLOW-UP.md)).
 
 ## Citation
 

@@ -15,6 +15,7 @@ project:
     - file: notebooks/03_analysis.ipynb
     - file: notebooks/04_figures.ipynb
     - file: nanopubs/README.md
+    - file: nanopubs/PUBLISHED.md
 site:
   title: "Building-level pluvial flood risk in Logroño — FORRT replication"
 # IMPORTANT: do NOT set base_url here — MyST silently ignores the key.
