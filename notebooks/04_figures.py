@@ -116,7 +116,7 @@ bx.set_title("Same for every design storm\n(all p < 0.001)", loc="left", fontsiz
 recessive(bx)
 fig.tight_layout()
 fig.savefig(FIGURES / "main_result.png", dpi=DPI, bbox_inches="tight")
-fig.savefig(FIGURES / "main_result.pdf", bbox_inches="tight")
+fig.savefig(FIGURES / "main_result.pdf", bbox_inches="tight", metadata={"CreationDate": None})
 plt.show()
 
 # %% [markdown]
@@ -150,5 +150,5 @@ fig.suptitle("Logroño, 100-year design storm: building-level risk classes (auth
              x=0.01, ha="left", fontsize=11, color=INK)
 fig.tight_layout(rect=(0, 0.05, 1, 0.96))
 fig.savefig(FIGURES / "risk_maps.png", dpi=DPI, bbox_inches="tight")
-fig.savefig(FIGURES / "risk_maps.pdf", bbox_inches="tight")
+fig.savefig(FIGURES / "risk_maps.pdf", bbox_inches="tight", metadata={"CreationDate": None})
 plt.show()
