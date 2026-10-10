@@ -33,7 +33,17 @@ nbclient = "*"
 ipykernel = "*"
 # --- pipeline driver ---
 snakemake = "*"
-# --- replace/extend with the deps your replication needs ---
+# --- replication deps ---
+requests = "*"
+geopandas = "*"            # vector I/O (Cadastre buildings, census sections)
+pyogrio = "*"
+shapely = "*"
+pyproj = "*"               # EPSG:32632 -> EPSG:25830 (REACHOUT CRS label, see 02)
+rasterio = "*"             # REACHOUT flood-depth GeoTIFFs
+rioxarray = "*"
+openpyxl = "*"             # INE indicator table definitions (.xlsx)
+netcdf4 = "*"              # intermediate rasters (NetCDF, never .npz — DOMAIN.md)
+# --- further examples ---
 # Examples (uncomment as needed):
 # statsmodels = "*"          # GLM/GLMM regression
 # scikit-learn = "*"         # classical ML
