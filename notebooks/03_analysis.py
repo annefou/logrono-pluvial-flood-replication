@@ -26,7 +26,8 @@
 # 2. Robustness of the hotspots to the choices made for Logroño.
 # 3. **The test** (the paper: building-level resolution "has the potential to
 #    significantly enhance the accuracy of urban risk assessments"): are the places where
-#    recorded storms caused flooding more flooded in the model than other streets?
+#    recorded storms caused flooding more flooded in the model than other streets — and do
+#    street-scale values locate them better than census-section values (sub-city units)?
 #
 # This notebook only measures. Interpretation belongs in the Outcome.
 
@@ -198,15 +199,23 @@ print(robust.round(3).to_string(index=False))
 # same test with the other return periods.
 
 # %%
-def open_ground_share(geoms: gpd.GeoSeries, flood: gpd.GeoSeries, radius: float = 20.0) -> np.ndarray:
-    zones = gpd.GeoSeries(geoms.buffer(radius).values, crs=CRS)
+def open_ground(areas: gpd.GeoSeries) -> gpd.GeoSeries:
+    """Each area minus buildings and water: the ground where surface water can stand."""
     blocked = pd.concat([buildings.geometry, water], ignore_index=True)
     tree = shapely.STRtree(blocked.values)
-    open_zones = []
-    for z in zones.values:
+    out = []
+    for z in areas.values:
         hits = tree.query(z, predicate="intersects")
-        open_zones.append(z.difference(shapely.union_all(blocked.values[hits])) if len(hits) else z)
-    return bcr.covered_fraction(gpd.GeoSeries(open_zones, crs=CRS), flood)
+        out.append(z.difference(shapely.union_all(blocked.values[hits])) if len(hits) else z)
+    return gpd.GeoSeries(out, crs=CRS)
+
+
+def open_ground_share(geoms: gpd.GeoSeries, flood: gpd.GeoSeries, radius: float = 20.0,
+                      zones: gpd.GeoSeries | None = None) -> np.ndarray:
+    """Flooded share of the open ground within ``radius`` (pass precomputed ``zones`` to reuse them)."""
+    if zones is None:
+        zones = open_ground(gpd.GeoSeries(geoms.buffer(radius).values, crs=CRS))
+    return bcr.covered_fraction(zones, flood)
 
 
 def nearby_buildings(geoms: gpd.GeoSeries, radius: float = 50.0) -> pd.DataFrame:
@@ -244,14 +253,16 @@ baseline["central"] = baseline.geometry.centroid.within(continuous)
 print(f"baseline: {len(baseline)} streets ({int(baseline['central'].sum())} in continuous urban fabric)")
 
 # %%
-def measures(units: gpd.GeoDataFrame, flood: gpd.GeoSeries) -> pd.DataFrame:
+def measures(units: gpd.GeoDataFrame, zones: gpd.GeoSeries, flood: gpd.GeoSeries) -> pd.DataFrame:
     m = nearby_buildings(units.geometry)
-    m.insert(0, "flooded_share_20m", open_ground_share(units.geometry, flood))
+    m.insert(0, "flooded_share_20m", open_ground_share(units.geometry, flood, zones=zones))
     return m
 
 
-place_m = places.join(measures(places, floods[30]))
-base_m = baseline.join(measures(baseline, floods[30]))
+place_zones = open_ground(gpd.GeoSeries(places.geometry.buffer(20).values, crs=CRS))
+base_zones = open_ground(gpd.GeoSeries(baseline.geometry.buffer(20).values, crs=CRS))
+place_m = places.join(measures(places, place_zones, floods[30]))
+base_m = baseline.join(measures(baseline, base_zones, floods[30]))
 
 # %%
 def percentile(values: pd.Series, reference: pd.Series) -> np.ndarray:
@@ -296,10 +307,70 @@ print(tests.round(3).to_string(index=False))
 # %%
 for measure in MEASURES:
     place_m[f"{measure}_pct"] = percentile(place_m[measure], base_m[measure])
-place_m.drop(columns="geometry").to_csv(RESULTS / "impact_places.csv", index=False)
-base_m.drop(columns="geometry").to_csv(RESULTS / "impact_baseline_streets.csv", index=False)
 place_m[["place", "events", "precision", "flooded_share_20m", "flooded_share_20m_pct",
          "HMA_mean_50m", "PFRMA_class_max_50m"]].round(3)
+
+# %% [markdown]
+# ### Does finer granularity enhance accuracy? Street scale vs census-section scale
+#
+# The paper's claim is comparative: "shifting the spatial scale from sub-city units to
+# individual buildings" and "this finer level of granularity has the potential to
+# significantly enhance the accuracy of urban risk assessments". Logroño's sub-city
+# statistical units are its 109 census sections. A section-level map gives every place in a
+# section the same value: here, the flooded share (≥ 30 cm, RP100) of the section's open
+# ground. At a reported place or baseline street, the section-level value is the
+# overlap-weighted mean of the sections under its 20 m zone.
+#
+# Each reported place is ranked among the same 512 baseline streets twice — with street-scale
+# values (above) and with section-scale values. If finer granularity locates impacts more
+# accurately, the street-scale percentiles are higher. Test: one-sided paired sign-flip test on
+# the per-place percentile differences, enumerating all 2^n sign patterns (exact, no seed).
+
+# %%
+sections = layer("sections")[["CUSEC", "geometry"]]
+sections["flooded_share"] = bcr.covered_fraction(open_ground(sections.geometry), floods[30])
+
+
+def section_value(zones: gpd.GeoSeries) -> np.ndarray:
+    """Overlap-weighted mean section value under each zone — what a section-level map shows there."""
+    z = gpd.GeoDataFrame({"unit": np.arange(len(zones))}, geometry=zones.values, crs=CRS)
+    ov = gpd.overlay(z, sections[["flooded_share", "geometry"]], how="intersection", keep_geom_type=True)
+    ov["w"] = ov.area
+    num = (ov["flooded_share"] * ov["w"]).groupby(ov["unit"]).sum()
+    den = ov["w"].groupby(ov["unit"]).sum()
+    return (num / den).reindex(np.arange(len(zones))).fillna(0).to_numpy()
+
+
+def paired_sign_flip(d: np.ndarray) -> dict:
+    d = np.asarray(d, float)
+    n = len(d)
+    signs = 1 - 2 * ((np.arange(2 ** n)[:, None] >> np.arange(n)) & 1)
+    null = (signs * d).mean(axis=1)
+    return {"n_places": n, "mean_difference": d.mean(),
+            "places_better_at_street_scale": int((d > 0).sum()),
+            "places_better_at_section_scale": int((d < 0).sum()),
+            "p_value": float((null >= d.mean() - 1e-12).mean())}
+
+
+place_m["flooded_share_section"] = section_value(places.geometry.buffer(20))
+base_m["flooded_share_section"] = section_value(baseline.geometry.buffer(20))
+scale_rows = []
+for bname, bmask in BASELINES.items():
+    for sub, mask in SUBSETS.items():
+        street = percentile(place_m.loc[mask, "flooded_share_20m"], base_m.loc[bmask, "flooded_share_20m"])
+        section = percentile(place_m.loc[mask, "flooded_share_section"], base_m.loc[bmask, "flooded_share_section"])
+        scale_rows.append({"places": sub, "baseline": bname, "mean_percentile_street": street.mean(),
+                           "mean_percentile_section": section.mean(), **paired_sign_flip(street - section)})
+scale_tests = pd.DataFrame(scale_rows)
+scale_tests.to_csv(RESULTS / "scale_test.csv", index=False)
+place_m["flooded_share_section_pct"] = percentile(place_m["flooded_share_section"], base_m["flooded_share_section"])
+print(sections["flooded_share"].describe().round(4))
+print(scale_tests.round(3).to_string(index=False))
+place_m[["place", "flooded_share_20m_pct", "flooded_share_section", "flooded_share_section_pct"]].round(3)
+
+# %%
+place_m.drop(columns="geometry").to_csv(RESULTS / "impact_places.csv", index=False)
+base_m.drop(columns="geometry").to_csv(RESULTS / "impact_baseline_streets.csv", index=False)
 
 # %% [markdown]
 # ### Sensitivity to the design storm
@@ -310,8 +381,8 @@ place_m[["place", "events", "precision", "flooded_share_20m", "flooded_share_20m
 rp_rows = []
 for rp in ["rp2", "rp5", "rp10", "rp25", "rp50", "rp100", "rp200"]:
     flood = floods[30] if rp == "rp100" else layer(f"flood_{rp}_30").geometry
-    pv = open_ground_share(places.geometry, flood)
-    bv = open_ground_share(baseline.geometry, flood)
+    pv = open_ground_share(places.geometry, flood, zones=place_zones)
+    bv = open_ground_share(baseline.geometry, flood, zones=base_zones)
     for bname, bmask in BASELINES.items():
         rp_rows.append({"return_period": rp, "baseline": bname,
                         **permutation_test(pv, bv[bmask.to_numpy()])})

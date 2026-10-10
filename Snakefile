@@ -55,6 +55,7 @@ rule analysis:
         f"{RESULTS}/robustness.csv",
         f"{RESULTS}/impact_test.csv",
         f"{RESULTS}/impact_test_return_periods.csv",
+        f"{RESULTS}/scale_test.csv",
     shell:
         f"cd {{NOTEBOOKS}} && jupytext --to notebook --execute 03_analysis.py"
 
