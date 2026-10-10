@@ -50,7 +50,12 @@ The **original paper's** DOI (bare, starting `10.` — the form prepends `https:
 > location, keep one block. For a pooled multi-region coverage, keep one block and add
 > each place in the form's location search (it builds the GeometryCollection).
 
-### Location A
+### Location A — Hamburg, Germany (the original paper's study area)
+
+`verify_quote` (2026-10-10): found, p. 1 (Abstract), match `normalized`, pdf sha256 `88121b0e…a7d5`.
+The paper does not name the city quarter of its worked example ("a city quarter in Hamburg",
+"a single statistical unit (neighbourhood) in Hamburg"), so the coverage is the city as the
+paper frames it — no narrower geometry is invented.
 
 <!-- field: quoteType -->
 **Quote type** (radio: whole | ends, required) — `whole` if under 500 characters (usual); `ends` only for a long start/end passage.
@@ -63,7 +68,7 @@ whole
 **Quoted Text** (textarea, required) — the **verbatim** sentence from the paper naming *this* area. Character-for-character from the PDF; never paraphrase. Each location needs its own quote.
 
 ```
-
+The framework is demonstrated using empirical data from Hamburg, Germany, identifying risk hotspots where high social vulnerability coincides with elevated flood exposure.
 ```
 
 <!-- field: quotation-end -->
@@ -77,14 +82,14 @@ whole
 **Short ID for location** (text input, required) — slug for the URI suffix (lowercase, hyphenated), unique per location. E.g. `sado-estuary`, `westerschelde`, `amazon-basin`.
 
 ```
-
+hamburg
 ```
 
 <!-- field: location-label -->
 **Area name** (text input, required) — human-readable name as the paper frames it. E.g. `Sado Estuary, Portugal`. Typing this into the form's **location search** geocodes it and fills the geometry.
 
 ```
-
+Hamburg, Germany
 ```
 
 <!-- field: geometry -->
@@ -97,6 +102,8 @@ coverage
 <!-- field: wkt -->
 **Geometry as Well-known Text (WKT)** (map / text, resolved in the form) — **Do NOT hand-write coordinates.** The form geocodes the area name to a polygon, or you draw it on the map. Only paste explicit `POINT(...)` / `POLYGON((...))` if the paper **states coordinates verbatim** — copied exactly. A hallucinated bounding box is a fabricated datum; leave blank otherwise.
 
+Left blank: resolved by the form's location search for "Hamburg, Germany".
+
 ```
 
 ```
@@ -105,10 +112,16 @@ coverage
 **Comment** (textarea, required) — one or two sentences on **how the quoted text supports** this being the coverage. Grounded in the paper, no new claims.
 
 ```
-
+The abstract states that the framework is demonstrated with empirical data from Hamburg, Germany. The worked example is a building-level realisation informed by one statistical unit (a city quarter) in Hamburg, which the paper does not name; the coverage is therefore the city.
 ```
 
-### Location B *(duplicate the block above for each further distinct site; delete if only one location)*
+### Logroño (the replication's own study area) — not drafted here
+
+This template documents the *paper's* coverage (paper DOI + a verbatim quote naming the
+area). The paper does not study Logroño — it only lists it among cities with REACHOUT flood
+maps (Sect. 4.3.2) — so a Logroño coverage nanopub would misstate the paper's scope. It
+needs a template whose subject is the Replication Study; proposed in
+`nanopubs/drafts/10_replication_area_proposal.md`.
 
 ## Publication note
 
