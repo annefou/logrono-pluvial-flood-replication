@@ -31,6 +31,7 @@
 # | `flood_rp100_{30..100}` | REACHOUT Baseline RP100 | depth ≥ threshold, polygonised on the native grid, minus water (§4) |
 # | `flood_rp{2,5,10,25,50,200}_30` | REACHOUT Baseline, other return periods | depth ≥ 30 cm, same rule — sensitivity of the impact test (§4) |
 # | `impact_places` | press reports + Cadastre addresses + OSM | one geometry per reported place (§5) |
+# | `cadastre_streets` | Cadastre addresses | address points per official street name — the impact test's baseline (§5) |
 #
 # Deviations from the paper introduced here are listed at the end (§6).
 
@@ -412,6 +413,7 @@ for d, g in floods.items():
 for rp, g in floods_rp30.items():
     write(gpd.GeoDataFrame(geometry=g.values, crs=CRS), f"flood_{rp.split('_')[1].lower()}_30")
 write(impact_places, "impact_places")
+write(addresses.dropna(subset=["street"]).dissolve("street").reset_index(), "cadastre_streets")
 
 # %% [markdown]
 # ## 6. Deviations from the paper introduced in this step

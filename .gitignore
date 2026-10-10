@@ -66,3 +66,7 @@ docker-image.tar.gz
 
 # Local scratch — a Claude Code session-resume helper, never part of a study.
 claude-resume.txt
+
+# Regenerable run artefacts (tables + provenance ARE committed)
+results/logs/
+results/*.gpkg

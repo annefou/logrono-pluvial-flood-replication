@@ -1,0 +1,9 @@
+variant,risk,spearman,hotspots_base,hotspots_variant,hotspots_retained
+WR_disability,PFRWB,0.9999999419287755,5,5,1.0
+WR_disability,PFRMA,0.9999998512988251,10,9,0.9
+weights_text,PFRWB,0.9999970880631235,5,5,1.0
+weights_text,PFRMA,0.9999955853544343,10,10,0.7
+ground_floor_shops,PFRWB,0.6833190736647942,5,1,0.2
+ground_floor_shops,PFRMA,1.0,10,10,1.0
+streets_urban_atlas,PFRWB,1.0,5,5,1.0
+streets_urban_atlas,PFRMA,0.8511763564344702,10,11,0.8

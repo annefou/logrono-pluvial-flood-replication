@@ -1,0 +1,25 @@
+measure,places,baseline,n_places,n_baseline,mean_percentile,p_value
+flooded_share_20m,all places,all streets,13,512,0.8384915865384616,9.999000099990002e-05
+flooded_share_20m,all places,central streets,13,143,0.8864981172673481,9.999000099990002e-05
+flooded_share_20m,press only,all streets,12,512,0.82568359375,9.999000099990002e-05
+flooded_share_20m,press only,central streets,12,143,0.8776223776223776,9.999000099990002e-05
+flooded_share_20m,without approximate,all streets,11,512,0.8460582386363636,9.999000099990002e-05
+flooded_share_20m,without approximate,central streets,11,143,0.8887476160203431,9.999000099990002e-05
+flooded_share_20m,streets only,all streets,6,512,0.7828776041666666,0.006399360063993601
+flooded_share_20m,streets only,central streets,6,143,0.8251748251748251,0.0021997800219978004
+HMA_mean_50m,all places,all streets,13,512,0.6357421875,0.045995400459954004
+HMA_mean_50m,all places,central streets,13,143,0.6511565357719203,0.038896110388961104
+HMA_mean_50m,press only,all streets,12,512,0.6459147135416666,0.042995700429957005
+HMA_mean_50m,press only,central streets,12,143,0.6622960372960373,0.028397160283971604
+HMA_mean_50m,without approximate,all streets,11,512,0.6392933238636364,0.061193880611938804
+HMA_mean_50m,without approximate,central streets,11,143,0.6557533375715194,0.0413958604139586
+HMA_mean_50m,streets only,all streets,6,512,0.6652018229166666,0.0846915308469153
+HMA_mean_50m,streets only,central streets,6,143,0.6812354312354313,0.07189281071892811
+PFRMA_class_max_50m,all places,all streets,13,512,0.6217698317307693,0.0476952304769523
+PFRMA_class_max_50m,all places,central streets,13,143,0.6083916083916083,0.07929207079292071
+PFRMA_class_max_50m,press only,all streets,12,512,0.6590169270833334,0.0178982101789821
+PFRMA_class_max_50m,press only,central streets,12,143,0.6462703962703962,0.032896710328967106
+PFRMA_class_max_50m,without approximate,all streets,11,512,0.6252663352272727,0.055594440555944404
+PFRMA_class_max_50m,without approximate,central streets,11,143,0.6147488874761602,0.08769123087691232
+PFRMA_class_max_50m,streets only,all streets,6,512,0.6344401041666666,0.11378862113788621
+PFRMA_class_max_50m,streets only,central streets,6,143,0.6247086247086246,0.1556844315568443

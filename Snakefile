@@ -19,7 +19,7 @@ rule all:
     input:
         # Replace with your actual final artefacts:
         f"{FIGURES}/main_result.png",
-        f"{RESULTS}/summary.csv",
+        f"{RESULTS}/impact_test.csv",
 
 
 # ---------- 01: Data download ----------
@@ -51,7 +51,10 @@ rule analysis:
     input:
         f"{DATA}/interim/logrono.gpkg",
     output:
-        f"{RESULTS}/summary.csv",
+        f"{RESULTS}/logrono_risk.gpkg",
+        f"{RESULTS}/robustness.csv",
+        f"{RESULTS}/impact_test.csv",
+        f"{RESULTS}/impact_test_return_periods.csv",
     shell:
         f"cd {{NOTEBOOKS}} && jupytext --to notebook --execute 03_analysis.py"
 
@@ -59,7 +62,7 @@ rule analysis:
 # ---------- 04: Figures ----------
 rule figures:
     input:
-        f"{RESULTS}/summary.csv",
+        f"{RESULTS}/impact_test.csv",
     output:
         f"{FIGURES}/main_result.png",
     shell:
