@@ -25,9 +25,10 @@
 # |---|---|---|
 # | `sections` | INE Census 2021 | 109 secciones of Logroño + indicators + proxies (§1) |
 # | `buildings` | Cadastre buildings + parts | floors, residents, ground-floor residents, vulnerability indicators (§2) |
-# | `urban_area`, `streets` | Cadastre urban blocks, EU-Hydro | gaps between blocks after a 25 m closing, minus water (§3) |
+# | `urban_area`, `streets` | Cadastre urban blocks, Urban Atlas water | gaps between blocks after a 25 m closing, minus water (§3) |
 # | `streets_urban_atlas` | Urban Atlas 2018 | road classes, minus water — robustness check only (§3) |
-# | `flood_rp100_{30..100}` | REACHOUT Baseline RP100 | depth ≥ threshold, polygonised on the native grid (§4) |
+# | `water` | Urban Atlas 2018 class 50000 | river and water bodies; checked against EU-Hydro for alignment with REACHOUT (§4) |
+# | `flood_rp100_{30..100}` | REACHOUT Baseline RP100 | depth ≥ threshold, polygonised on the native grid, minus water (§4) |
 # | `impact_places` | press reports + Cadastre addresses + OSM | one geometry per reported place (§5) |
 #
 # Deviations from the paper introduced here are listed at the end (§6).
@@ -163,8 +164,8 @@ print(b.groupby("use", dropna=False)[["R", "R_G"]].sum().round(0))
 #
 # - **Urban area** = blocks closed by 25 m (buffer +25 m, then −25 m): gaps narrower than
 #   ~50 m between blocks are filled. Wider corridors (e.g. the LO-20) are not street area.
-# - **Streets** = urban area − blocks − water (EU-Hydro river surfaces and inland water).
-#   Building footprints are removed later by the rings themselves.
+# - **Streets** = urban area − blocks − water (Urban Atlas class 50000; compared with
+#   EU-Hydro in §4). Building footprints are removed later by the rings themselves.
 # - **Urban Atlas streets** (robustness only) = classes 12210 fast transit roads,
 #   12220 other roads, minus water.
 
@@ -174,12 +175,14 @@ blocks_geom = zoning[zoning["LocalisedCharacterString"].str.strip() == "MANZANA"
 blocks = shapely.union_all(blocks_geom.make_valid().to_crs(CRS).values)
 urban = blocks.buffer(CLOSING_M).buffer(-CLOSING_M)
 
-water = pd.concat([gpd.read_file(RAW / "euhydro_river_polygons.geojson"),
-                   gpd.read_file(RAW / "euhydro_inland_water.geojson")]).set_crs(CRS, allow_override=True)
-water_geom = shapely.union_all(water.geometry.make_valid().values)
+ua = gpd.read_file(RAW / "urban_atlas_2018_logrono.geojson").set_crs(CRS, allow_override=True)
+water_geom = shapely.union_all(ua[ua["code_2018"] == "50000"].geometry.make_valid().values)
+euhydro_river = shapely.union_all(gpd.read_file(RAW / "euhydro_river_polygons.geojson")
+                                  .set_crs(CRS, allow_override=True).geometry.make_valid().values)
+euhydro_inland = shapely.union_all(gpd.read_file(RAW / "euhydro_inland_water.geojson")
+                                   .set_crs(CRS, allow_override=True).geometry.make_valid().values)
 
 streets = urban.difference(blocks).difference(water_geom)
-ua = gpd.read_file(RAW / "urban_atlas_2018_logrono.geojson").set_crs(CRS, allow_override=True)
 ua_roads = shapely.union_all(ua[ua["code_2018"].isin(["12210", "12220"])].geometry.make_valid().values)
 streets_ua = ua_roads.difference(water_geom)
 
@@ -200,6 +203,18 @@ print(f"buildings in the urban area: {int(b['in_urban_area'].sum()):,} of {len(b
 # threshold (depth ≥ 30, 40, … 100 cm, as the paper's nested flood layers) is polygonised
 # on the native 2 m grid, and only the polygons are transformed to EPSG:25830, where all
 # buffers are drawn in ground metres. NoData (−9999) is dry.
+#
+# **Water.** SaferRAIN rains on the whole grid, so the Ebro's bed holds water too. That is
+# not pluvial flooding of urban surfaces, and it would count as hazard for riverside
+# buildings, so water bodies are removed from every flood layer. The water mask must line
+# up with REACHOUT: the check below measures how much of the flooded Ebro channel (≥ 30 cm,
+# central stretch) each candidate covers, and at which shift. Urban Atlas water and
+# EU-Hydro (river surfaces + inland water, which together hold this reach of the Ebro)
+# both line up with no shift and cover about the same share; EU-Hydro's river-surface
+# layer alone does not. Urban Atlas is used (one product, also used for the road
+# robustness check). REACHOUT itself lines up
+# with the Cadastre (water ≥ 30 cm is ~3× rarer inside footprints than outside, and any
+# shift of 4 m or more makes that worse).
 
 # %%
 def flood_polygons(tif: Path, extent_25830: Polygon, depths_cm: list[int]) -> dict[int, gpd.GeoSeries]:
@@ -219,6 +234,26 @@ def flood_polygons(tif: Path, extent_25830: Polygon, depths_cm: list[int]) -> di
 
 extent = urban.buffer(HAZARD_MARGIN_M + 30).envelope
 floods = flood_polygons(RAW / f"reachout/Logrono/Baseline/{RETURN_PERIOD}.tif", extent, DEPTHS_CM)
+
+EBRO_WINDOW = shapely.box(543500, 4701500, 547600, 4703300)
+channel = shapely.union_all(floods[30].values).intersection(EBRO_WINDOW)
+water_check = []
+for name, w in [("Urban Atlas 50000", water_geom),
+                ("EU-Hydro river + inland water", euhydro_river.union(euhydro_inland)),
+                ("EU-Hydro river surfaces only", euhydro_river)]:
+    w = w.intersection(EBRO_WINDOW)
+    cover = {(dx, dy): channel.intersection(shapely.affinity.translate(w, dx, dy)).area / channel.area
+             for dx in range(-60, 61, 10) for dy in range(-60, 61, 10)}
+    best = max(cover, key=cover.get)
+    water_check.append({"mask": name, "channel_covered": cover[(0, 0)], "best_shift_m": best,
+                        "covered_at_best_shift": cover[best]})
+water_check = pd.DataFrame(water_check)
+print(water_check.round(3).to_string(index=False))
+assert water_check.iloc[0]["best_shift_m"] == (0, 0) and water_check.iloc[0]["channel_covered"] > 0.7
+
+floods = {d: gpd.GeoSeries(g.difference(water_geom), crs=CRS).explode(index_parts=False)
+          for d, g in floods.items()}
+floods = {d: g[~g.is_empty] for d, g in floods.items()}
 for d, g in floods.items():
     print(f"depth ≥ {d} cm: {len(g):,} polygons, {g.area.sum() / 1e6:.3f} km²")
 
@@ -350,5 +385,7 @@ write(impact_places, "impact_places")
 #    (the paper's example used synthetic building-level data and did not disaggregate).
 # 4. **Indicators**: census proxies (§1), not the paper's exact definitions.
 # 5. **Ground floor**: residential main use → residents / floors; no per-floor use data.
-# 6. **Streets**: gaps between Cadastre urban blocks (25 m closing) minus EU-Hydro water,
-#    not road polygons.
+# 6. **Streets**: gaps between Cadastre urban blocks (25 m closing) minus water, not road
+#    polygons.
+# 7. **Water bodies removed from the flood layers** (Urban Atlas class 50000): the
+#    rain-on-grid model also fills the river bed, which is not pluvial flooding.
