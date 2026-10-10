@@ -1,7 +1,7 @@
 {
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
-  "name": "logrono-pluvial-flood-replication",
+  "name": "Logroño replication of Vogelbacher et al. (2026): building-level pluvial flood risk with open data",
   "description": "FORRT replication of Vogelbacher et al. (2026, NHESS) in Logroño, Spain: building-level urban pluvial flood risk with open Spanish data (REACHOUT flood maps, Cadastre, INE census), compared with recorded flood impacts.",
   "version": "0.1.0",
   "dateCreated": "2026-10-10",
@@ -15,7 +15,10 @@
     "name": "Python",
     "version": "3.12"
   },
-  "operatingSystem": ["Linux", "macOS"],
+  "operatingSystem": [
+    "Linux",
+    "macOS"
+  ],
   "author": [
     {
       "@type": "Person",
@@ -33,17 +36,72 @@
     "reproducibility",
     "FORRT",
     "nanopublication",
-    "Science-Live"
+    "Science-Live",
+    "pluvial flooding",
+    "urban flood risk",
+    "social vulnerability",
+    "open data",
+    "Logroño"
   ],
   "referencePublication": {
     "@type": "ScholarlyArticle",
     "name": "A high-resolution framework for urban pluvial flood risk mapping",
     "datePublished": "2026",
-    "@id": "https://doi.org/10.5194/nhess-26-2765-2026"
+    "@id": "https://doi.org/10.5194/nhess-26-2765-2026",
+    "author": [
+      {
+        "@type": "Person",
+        "givenName": "Anastasia",
+        "familyName": "Vogelbacher"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Malte",
+        "familyName": "von Szombathely"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Marc",
+        "familyName": "Lennartz"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Benjamin",
+        "familyName": "Poschlod"
+      },
+      {
+        "@type": "Person",
+        "givenName": "Jana",
+        "familyName": "Sillmann"
+      }
+    ]
   },
   "isPartOf": {
     "@type": "Organization",
     "name": "Science Live",
     "url": "https://platform.sciencelive4all.org"
+  },
+  "softwareRequirements": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "building-climate-risk",
+      "version": "0.2.0",
+      "identifier": "https://doi.org/10.5281/zenodo.23282971",
+      "codeRepository": "https://github.com/annefou/building-climate-risk"
+    },
+    "geopandas",
+    "shapely",
+    "rasterio",
+    "pyproj",
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "snakemake",
+    "jupytext"
+  ],
+  "spatialCoverage": {
+    "@type": "Place",
+    "name": "Logroño, La Rioja, Spain",
+    "sameAs": "http://www.wikidata.org/entity/Q14325"
   }
 }

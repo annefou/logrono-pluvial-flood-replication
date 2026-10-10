@@ -4,7 +4,7 @@
   "chain_shape": "paper-rooted",
   "source": {
     "repository": "https://github.com/annefou/logrono-pluvial-flood-replication",
-    "commit": "042252d37e96765b91a70aa20fe55467ae0fe9a8",
+    "commit": "91f01b229704d1e5ed303c3cc8973affcfa51781",
     "figure": "figures/main_result.png"
   },
   "steps": [
