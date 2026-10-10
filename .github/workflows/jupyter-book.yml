@@ -58,6 +58,16 @@ jobs:
             pixi run jupytext --to notebook "$nb"
           done
 
+      # The REACHOUT archive (254 MB) is immutable — Zenodo record 14035876, verified
+      # by its published MD5 in 01 — so it is cached; the small Cadastre / INE files
+      # change over time and are downloaded on every run.
+      - name: Cache REACHOUT archive
+        if: steps.guard.outputs.ready == 'true'
+        uses: actions/cache@v5
+        with:
+          path: data/raw/PluvialFloodMap_Logrono.zip
+          key: reachout-logrono-zenodo-14035876-md5-324f1558766b10b613815b9e15d37a58
+
       # Glob, not a hard-coded list — new notebooks are picked up automatically.
       - name: Execute notebooks
         if: steps.guard.outputs.ready == 'true'

@@ -138,14 +138,22 @@ def _digest(path: Path, algo: str) -> str:
     return h.hexdigest()
 
 
-def fetch(url: str, out: Path) -> dict:
-    """Stream a URL to disk; return the response headers that identify the version."""
-    with requests.get(url, stream=True, timeout=300) as r:
-        r.raise_for_status()
-        with open(out, "wb") as f:
-            for chunk in r.iter_content(chunk_size=1 << 16):
-                f.write(chunk)
-        return {"last_modified": r.headers.get("Last-Modified")}
+def fetch(url: str, out: Path, attempts: int = 4) -> dict:
+    """Stream a URL to disk, retrying on server errors (e.g. Zenodo's occasional 504);
+    return the response headers that identify the version."""
+    import time
+    for attempt in range(attempts):
+        try:
+            with requests.get(url, stream=True, timeout=300) as r:
+                r.raise_for_status()
+                with open(out, "wb") as f:
+                    for chunk in r.iter_content(chunk_size=1 << 16):
+                        f.write(chunk)
+                return {"last_modified": r.headers.get("Last-Modified")}
+        except requests.RequestException as err:
+            if attempt == attempts - 1:
+                raise RuntimeError(f"{url}: download failed after {attempts} attempts") from err
+            time.sleep(30 * (attempt + 1))
 
 
 def extract(archive: Path, members, dest: Path) -> list[str]:
