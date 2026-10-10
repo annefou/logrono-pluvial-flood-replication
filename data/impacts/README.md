@@ -23,7 +23,10 @@ hazard (and exposure) components of the risk framework, not social vulnerability
   (OSM gives postcode 26002). Google Maps coordinates are not used (licence).
 - `source_kind`: `press` = the article's own reporting; `social_media_embedded` = a
   post embedded in the article (weaker evidence; analyse separately).
-- Not yet geocoded; that is done in `notebooks/02_data_clean.py`.
+- Located in `notebooks/02_data_clean.py`: streets from the Cadastre address register
+  (official thoroughfare names + address points); places without an address from
+  OpenStreetMap features in `osm_features.json` (ODbL; fetched once by
+  `01_data_download.py` with the query stored in the file, then committed).
 - Wind damage reported in the same articles (terraces in Portales, a fallen tree in
   calle Lope de Vega, 2018) is excluded: it is not flooding.
 
