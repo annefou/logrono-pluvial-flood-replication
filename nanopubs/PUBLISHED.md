@@ -47,6 +47,11 @@ Hamburg Outcome. Read from the published TriG, this chain's Outcome is **Partial
 requires. The CiTO carries all seven citations of the draft (qualifies, extends, usesDataFrom,
 citesAsDataSource ×3, credits).
 
+**Re-run with the fix.** forrt-research-mcp PR #12 (`fix/verify-chain-network`, commit 3963e2a, open at the
+time), which reads the ledger's own Outcome and CiTO from their TriG, against the dev API: **green — 15 pass,
+0 fail, 1 info**. `verdict-relation`: "verdict PartiallySupported matches CiTO qualifies"; all seven cited
+targets resolve; the Hamburg chain is listed as a neighbour (info) and not judged.
+
 ## Optional layers
 
 | Step | Template | URI | Published |
