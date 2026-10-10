@@ -45,5 +45,5 @@ The FORRT chain (Quote → AIDA → Claim → Replication Study → Outcome → 
 
 If you use this work, please cite both:
 
-- This software: [`CITATION.cff`](CITATION.cff) (Zenodo DOI minted at the first release).
+- This software: [`CITATION.cff`](CITATION.cff) → DOI [10.5281/zenodo.23284600](https://doi.org/10.5281/zenodo.23284600) (v0.1.0: [10.5281/zenodo.23284601](https://doi.org/10.5281/zenodo.23284601)).
 - The original paper: [10.5194/nhess-26-2765-2026](https://doi.org/10.5194/nhess-26-2765-2026).

@@ -4,7 +4,7 @@
   "chain_shape": "paper-rooted",
   "source": {
     "repository": "https://github.com/annefou/logrono-pluvial-flood-replication",
-    "commit": "91f01b229704d1e5ed303c3cc8973affcfa51781",
+    "commit": "09474d9749f9da3898a9e702d265263db2ae602c",
     "figure": "figures/main_result.png"
   },
   "steps": [
@@ -138,6 +138,7 @@
       "prefill": {
         "outcome": "logrono-pluvial-flood-outcome",
         "label": "Building-level pluvial flood risk transferred to Logroño with open data: fine-scale modelled flooding locates recorded impacts better than sub-city units; risk indices only weakly (partially supported)",
+        "repo": "https://doi.org/10.5281/zenodo.23284601",
         "date": "2026-10-10",
         "validationStatus": "https://w3id.org/sciencelive/o/terms/PartiallySupported",
         "conclusion": "Partially supported. The paper states that building-level granularity \"has the potential to significantly enhance the accuracy of urban risk assessments\". Transferred to Logroño (Spain) with open data only, the framework's hazard component is accurate where it can be checked: places where recorded storms (2018-2024) caused flooding are among the most flooded places in the open 2 m flood map (REACHOUT), far more than other streets, for every design storm. The finer granularity is what makes the difference: the same flood map summarised per census section (the sub-city statistical units the paper moves away from) locates the same places clearly less well. This supports the claim, including its comparison with sub-city units, for the part of a risk assessment that says where water causes problems.\n\nThe claim as a whole, about risk assessments, could only be partly tested. Risk = social vulnerability x exposure x hazard, and recorded impacts (press reports of flooded streets, underpasses, garages, a hospital car park) say where water caused trouble, not who was affected or how vulnerable they were. Social vulnerability was therefore not tested, and exposure only indirectly. The building-level risk indices agree only weakly with the recorded places; this is expected by design (several reported places are roads and underpasses with no residents beside them, where the framework correctly gives high hazard but low risk to residents) and is not evidence against them. The accuracy of the building-level risk classes themselves remains unvalidated.",
@@ -148,6 +149,7 @@
       "provenance": {
         "outcome": "nanopubs/drafts/05_outcome.md",
         "label": "nanopubs/drafts/05_outcome.md",
+        "repo": "CITATION.cff",
         "date": "CITATION.cff",
         "validationStatus": "nanopubs/drafts/05_outcome.md",
         "conclusion": "nanopubs/drafts/05_outcome.md",
