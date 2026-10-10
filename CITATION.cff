@@ -30,6 +30,12 @@ identifiers:
   value: 10.5281/zenodo.23284600
   description: Concept DOI (resolves to the latest version) — cite the project
 - type: doi
+  value: 10.5281/zenodo.23285198
+  description: Version DOI for v0.1.1 — pins this exact release; cite this from nanopubs
+- type: swh
+  value: swh:1:rev:2857113fecdebc8f913dfc243381f84d5ecb1cb2;origin=https://github.com/annefou/logrono-pluvial-flood-replication
+  description: Software Heritage ID of the v0.1.1 source tree
+- type: doi
   value: 10.5281/zenodo.23284601
   description: Version DOI for v0.1.0 — pins this exact release; cite this from nanopubs
 - type: swh

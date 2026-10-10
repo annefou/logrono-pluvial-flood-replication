@@ -10,8 +10,8 @@
   "codeRepository": "https://github.com/annefou/logrono-pluvial-flood-replication",
   "identifier": [
     "https://doi.org/10.5281/zenodo.23284600",
-    "https://doi.org/10.5281/zenodo.23284601",
-    "swh:1:rev:bfe7e15f799bdaedd5081030a9d6ad9f9210e6dd;origin=https://github.com/annefou/logrono-pluvial-flood-replication"
+    "https://doi.org/10.5281/zenodo.23285198",
+    "swh:1:rev:2857113fecdebc8f913dfc243381f84d5ecb1cb2;origin=https://github.com/annefou/logrono-pluvial-flood-replication"
   ],
   "@id": "https://doi.org/10.5281/zenodo.23284600",
   "programmingLanguage": {

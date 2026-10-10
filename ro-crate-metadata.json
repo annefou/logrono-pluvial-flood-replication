@@ -89,10 +89,10 @@
         }
       ],
       "identifier": [
-        "https://doi.org/10.5281/zenodo.23284601",
-        "swh:1:rev:bfe7e15f799bdaedd5081030a9d6ad9f9210e6dd;origin=https://github.com/annefou/logrono-pluvial-flood-replication"
+        "https://doi.org/10.5281/zenodo.23285198",
+        "swh:1:rev:2857113fecdebc8f913dfc243381f84d5ecb1cb2;origin=https://github.com/annefou/logrono-pluvial-flood-replication"
       ],
-      "version": "0.1.0"
+      "version": "0.1.1"
     },
     {
       "@id": "https://orcid.org/0000-0002-1784-2920",
