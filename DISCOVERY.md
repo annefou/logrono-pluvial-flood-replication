@@ -157,3 +157,8 @@ Paper/method/data: Anastasia Vogelbacher, Malte von Szombathely, Marc Lennartz, 
 Poschlod, Jana Sillmann. Hazard maps: Andrea Staccione, Jeremy S. Pal (REACHOUT).
 Buildings: Dirección General del Catastro. Census: INE. Hamburg reproduction: Anne
 Fouilloux.
+
+## Follow-up
+
+Climate-change and adaptation scenarios (REACHOUT CC/NBS, Destination Earth Climate DT
+storylines and projections) are planned in a separate repository: see `FOLLOW-UP.md`.
