@@ -60,7 +60,10 @@ netcdf4 = "*"              # intermediate rasters (NetCDF, never .npz — DOMAIN
 # dask = "*"                 # out-of-core / parallel
 
 # Pip-only deps go in [pypi-dependencies]. Conda-forge is preferred where available.
-# [pypi-dependencies]
+[pypi-dependencies]
+# The method (vulnerability, hazard, risk, classes), shared with the Hamburg
+# reproduction and regression-tested on the authors' example (37/37 classes).
+pfr-building-risk = { git = "https://github.com/annefou/pfr-building-risk", tag = "v0.1.0" }
 # pygbif = "*"               # GBIF occurrences
 # polytope-client = "*"      # Destination Earth Climate DT
 # earthkit-data = "*"
