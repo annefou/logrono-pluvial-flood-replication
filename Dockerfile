@@ -8,6 +8,11 @@ WORKDIR /app
 
 # Install the pinned environment first (separate from source copy so the lock
 # layer is cached across source-only edits).
+# git: pixi installs building-climate-risk from its GitHub tag (pixi.toml
+# [pypi-dependencies]); the pixi base image ships without git.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 COPY pixi.toml pixi.lock /app/
 RUN pixi install --locked
 
