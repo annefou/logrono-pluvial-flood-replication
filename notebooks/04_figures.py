@@ -17,7 +17,8 @@
 # # 04 — Figures
 #
 # 1. **Main result**: where the reported flood places rank among Logroño's streets by
-#    modelled flooding, and how that holds across design storms.
+#    modelled flooding — at street scale and at census-section scale (the sub-city units the
+#    paper moves away from) — and how that holds across design storms.
 # 2. **Risk maps**: building-level risk classes in the centre, with the reported places.
 #
 # Colours: categorical slots 1–3 (validated all-pairs, colour-vision-deficiency safe;
@@ -52,6 +53,7 @@ PLACE_COLOR = "#eb6834"
 places = pd.read_csv(RESULTS / "impact_places.csv")
 rp = pd.read_csv(RESULTS / "impact_test_return_periods.csv")
 tests = pd.read_csv(RESULTS / "impact_test.csv")
+scale = pd.read_csv(RESULTS / "scale_test.csv")
 
 
 def kind(p: str) -> str:
@@ -75,26 +77,41 @@ def short(name: str) -> str:
             .replace(", aparcamiento y salas de espera", "").replace("circunvalación ", ""))
 
 
-p = places.assign(pct=100 * places["flooded_share_20m_pct"], kind=places["precision"].map(kind))
+p = places.assign(pct=100 * places["flooded_share_20m_pct"],
+                  pct_section=100 * places["flooded_share_section_pct"], kind=places["precision"].map(kind))
 p = p.sort_values("pct").reset_index(drop=True)
 main = tests[(tests["measure"] == "flooded_share_20m") & (tests["places"] == "all places")
              & (tests["baseline"] == "all streets")].iloc[0]
+sc = scale[(scale["places"] == "all places") & (scale["baseline"] == "all streets")].iloc[0]
 
-fig, (ax, bx) = plt.subplots(1, 2, figsize=(12, 5.6), gridspec_kw={"width_ratios": [1.5, 1]})
+fig, (ax, bx) = plt.subplots(1, 2, figsize=(14, 6.4), gridspec_kw={"width_ratios": [1.6, 1], "wspace": 0.35})
 ax.axvline(50, color=MUTED, linewidth=1.2, linestyle=(0, (4, 3)))
-ax.text(49, -0.6, "median street", color=INK_2, fontsize=8, ha="right", va="center")
+ax.text(51, -0.75, "typical street", color=INK_2, fontsize=8, ha="left", va="center")
+ax.hlines(p.index, p["pct_section"], p["pct"], color=GRID, linewidth=2.5, zorder=1)
+ax.scatter(p["pct_section"], p.index, s=46, facecolor="white", edgecolor=MUTED, linewidth=1.4, zorder=2)
 for k, (color, marker, _) in SLOTS.items():
     s = p[p["kind"] == k]
     ax.scatter(s["pct"], s.index, s=64, color=color, marker=marker, edgecolor="white", linewidth=1.5, zorder=3)
-ax.set_yticks(p.index, [f"{short(n)}  ({e.replace(';', ', ')})" for n, e in zip(p["place"], p["events"])],
-              fontsize=8, color=INK)
+def share(f: float) -> str:
+    return f"{100 * f:.0f} %" if 100 * f >= 1 or f == 0 else f"{100 * f:.1f} %"
+
+
+ax.set_yticks(p.index, [f"{short(n)}  ({e.replace(';', ', ')}) · {share(f)} flooded"
+                        for n, e, f in zip(p["place"], p["events"], p["flooded_share_20m"])], fontsize=8, color=INK)
 ax.set_xlim(0, 100)
-ax.set_xlabel("Percentile among 512 other streets (modelled flooding ≥ 30 cm, 100-year storm)", color=INK_2, fontsize=9)
-ax.set_title(f"Reported flood places: mean {100 * main['mean_percentile']:.0f}th percentile\n"
-             f"(one-sided permutation test p < 0.001, n = {int(main['n_places'])})", loc="left", fontsize=10, color=INK)
-ax.legend(handles=[Line2D([], [], color=c, marker=m, linestyle="", markersize=7, markeredgecolor="white", label=l)
-                   for c, m, l in SLOTS.values()], loc="upper left", fontsize=8, frameon=True, title="Located as",
-          title_fontsize=8)
+ax.set_ylim(-1.2, len(p) - 0.2)
+ax.set_xlabel("More flooded in the model than …% of Logroño's other 512 streets\n"
+              "(share of nearby open ground under ≥ 30 cm, 100-year storm)", color=INK_2, fontsize=9)
+ax.text(0, -1.05, "← drier", color=INK_2, fontsize=8, ha="left", va="center")
+ax.text(100, -1.05, "more flooded →", color=INK_2, fontsize=8, ha="right", va="center")
+ax.set_title(f"Reported flood places: mean rank {100 * main['mean_percentile']:.0f} at street scale (p < 0.001)\n"
+             f"vs {100 * sc['mean_percentile_section']:.0f} with census-section values "
+             f"(paired p = {sc['p_value']:.3f}, n = {int(sc['n_places'])})", loc="left", fontsize=10, color=INK)
+ax.legend(handles=[Line2D([], [], color=c, marker=m, linestyle="", markersize=7, markeredgecolor="white",
+                          label=f"street scale — {l}") for c, m, l in SLOTS.values()]
+          + [Line2D([], [], marker="o", linestyle="", markersize=6.5, markerfacecolor="white",
+                    markeredgecolor=MUTED, label="census-section scale (sub-city units)")],
+          loc="upper left", fontsize=7.5, frameon=True, title="Rank of each place", title_fontsize=8)
 recessive(ax)
 
 order = ["rp2", "rp5", "rp10", "rp25", "rp50", "rp100", "rp200"]
@@ -111,7 +128,7 @@ bx.set_xticks(years, [str(y) for y in years])
 bx.set_xlim(1.6, 600)
 bx.set_ylim(0, 100)
 bx.set_xlabel("Design storm return period (years)", color=INK_2, fontsize=9)
-bx.set_ylabel("Mean percentile of the 13 places", color=INK_2, fontsize=9)
+bx.set_ylabel("Mean rank of the 13 places (street scale)", color=INK_2, fontsize=9)
 bx.set_title("Same for every design storm\n(all p < 0.001)", loc="left", fontsize=10, color=INK)
 recessive(bx)
 fig.tight_layout()

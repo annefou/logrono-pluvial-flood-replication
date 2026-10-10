@@ -8,13 +8,17 @@ The paper maps urban pluvial flood risk building by building (social vulnerabili
 
 This FORRT **replication** transfers the framework to a new city, **Logroño (Spain)**, using **open data only** — REACHOUT pluvial flood maps (the paper itself names them as a basis for transfer), the Spanish Cadastre, the INE 2021 census and Copernicus Urban Atlas — and tests the accuracy claim against reality: the **places where storms caused flooding in 2018–2024**, collected from local press reports. Risk is computed for all 6,315 buildings with [`building-climate-risk`](https://github.com/annefou/building-climate-risk) v0.2.0, the open implementation that reproduces the authors' Hamburg example.
 
-![Where the reported flood places rank among Logroño's streets by modelled flooding](figures/main_result.png)
+![Where the reported flood places rank among Logroño's streets by modelled flooding: street scale (filled markers) and census-section scale (hollow circles)](figures/main_result.png)
+
+*How to read it:* each row is a place where a storm caused flooding. The position says how much more flooded it is in the model than Logroño's other streets (0 = driest, 100 = most flooded; the dashed line is a typical street). Filled markers use street-scale values, hollow circles the census-section average — the longer the line to the right, the more the finer scale helps. The right panel repeats the street-scale test for every design storm.
 
 ## Result
 
 - **The flood hazard locates recorded impacts.** The 13 distinct places reported flooded rank on average at the **84th percentile** of the 512 other streets by modelled flooding (≥ 30 cm, 100-year storm; one-sided permutation test p ≤ 0.0001); 12 of 13 are above the median street, and the result holds for every design storm from 2 to 200 years.
 - **Finer granularity is what makes the difference.** The same flood map summarised per census section — the sub-city units the paper moves away from — places the same locations clearly less well: 69th vs 84th percentile, 9 of 13 places better at street scale (exact paired test p = 0.010).
 - **The building-level risk indices agree only weakly** with the recorded places (61st–68th percentile, p = 0.02–0.16). This is expected by design: several reported places are roads and an underpass with no residents beside them, where the framework rightly gives high hazard but low risk to residents.
+
+- **Social vulnerability, as the paper defines it, mostly re-counts residents.** The indicators are counts per building (number of children, of elderly people living alone, …), so the vulnerability index follows building size almost exactly (rank correlation 0.96 with residents), and building size enters risk twice (vulnerability × exposure). With census rates instead of counts the correlation vanishes (0.06); the risk ranking is unchanged, but the number of hotspot buildings rises from 5 to 21 (well-being) and from 10 to 28 (mobility).
 
 **Verdict: partially supported.** What could be tested — the hazard component, at building / street scale versus sub-city units — supports the paper's claim. What could not be tested is equally explicit: recorded impacts say *where* water caused trouble, not *who* was affected, so **social vulnerability was not tested**, exposure only indirectly, and the accuracy of the building-level risk classes remains unvalidated. Testing them needs impact data on people (e.g. emergency calls or evacuations by address).
 

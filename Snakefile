@@ -56,6 +56,7 @@ rule analysis:
         f"{RESULTS}/impact_test.csv",
         f"{RESULTS}/impact_test_return_periods.csv",
         f"{RESULTS}/scale_test.csv",
+        f"{RESULTS}/sv_size_dependence.csv",
     shell:
         f"cd {{NOTEBOOKS}} && jupytext --to notebook --execute 03_analysis.py"
 
@@ -64,6 +65,7 @@ rule analysis:
 rule figures:
     input:
         f"{RESULTS}/impact_test.csv",
+        f"{RESULTS}/scale_test.csv",
         f"{RESULTS}/impact_test_return_periods.csv",
         f"{RESULTS}/logrono_risk.gpkg",
     output:

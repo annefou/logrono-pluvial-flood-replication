@@ -133,6 +133,12 @@ residents.drop(columns="geometry").to_csv(RESULTS / "risk_buildings.csv", index=
 # | `weights_text` | sensitivity weights children 0.7 / elderly singles 0.3 (the paper's text of Sect. 3.1.1) |
 # | `ground_floor_shops` | no ground-floor residents in Urban Atlas continuous urban fabric (class 11100), where ground floors are mostly shops |
 # | `streets_urban_atlas` | street area = Urban Atlas roads instead of Cadastre block gaps (HMA recomputed) |
+# | `indicators_as_rates` | vulnerability indicators as the census-section rates (share of children, …) instead of counts per building (rate × residents) |
+#
+# Why the last one: the paper defines the indicators as counts per building, and TOPSIS
+# ranks buildings by those counts, so the social-vulnerability index grows with the number of
+# residents — which exposure already counts (risk = SV × E × H). The table after the variants
+# records how closely SVI follows building size in both versions.
 
 # %%
 def variant_spec(**changes) -> dict:
@@ -150,12 +156,16 @@ ua = gpd.read_file("../data/raw/urban_atlas_2018_logrono.geojson").set_crs(CRS, 
 continuous = shapely.union_all(ua[ua["code_2018"] == "11100"].geometry.make_valid().values)
 shops = residents.representative_point().within(continuous)
 hma_ua = hazards(residents.geometry, tiled(layer("streets_urban_atlas").geometry))["HMA"]
+section_rates = layer("sections").set_index("CUSEC")
+as_rates = residents.assign(**{k: residents["CUSEC"].map(section_rates[f"{k}_rate"])
+                               for k in ("C", "ES", "WR", "EDQ")})
 
 VARIANTS = {
     "WR_disability": (residents.assign(WR=residents["WR_disab"]), None, SPEC),
     "weights_text": (residents, None, variant_spec(**{"vulnerability.sensitivity.weights": [0.7, 0.3]})),
     "ground_floor_shops": (residents.assign(R_G=np.where(shops, 0.0, residents["R_G"])), None, SPEC),
     "streets_urban_atlas": (residents, hma_ua, SPEC),
+    "indicators_as_rates": (as_rates, None, SPEC),
 }
 
 
@@ -176,6 +186,14 @@ for name, (data, hma, spec) in VARIANTS.items():
     robust += compare_to_base(name, bcr.assess(data, hz_v, spec))
 robust = pd.DataFrame(robust)
 robust.to_csv(RESULTS / "robustness.csv", index=False)
+
+hz_base = {"HWB": residents["HWB"], "HMA": residents["HMA"]}
+size = pd.DataFrame([{"indicators": name, "spearman_SVI_residents": out["SVI"].corr(residents["R"], method="spearman"),
+                      "spearman_SVPF_residents": out["SVPF"].corr(residents["R"], method="spearman")}
+                     for name, out in [("counts per building (paper)", base),
+                                       ("section rates", bcr.assess(as_rates, hz_base, SPEC))]])
+size.to_csv(RESULTS / "sv_size_dependence.csv", index=False)
+print(size.round(3).to_string(index=False))
 print(f"ground-floor-shops variant: {int(shops.sum()):,} buildings in continuous urban fabric")
 print(robust.round(3).to_string(index=False))
 

@@ -7,3 +7,5 @@ ground_floor_shops,PFRWB,0.6833190736647942,5,1,0.2
 ground_floor_shops,PFRMA,1.0,10,10,1.0
 streets_urban_atlas,PFRWB,1.0,5,5,1.0
 streets_urban_atlas,PFRMA,0.8511763564344702,10,11,0.8
+indicators_as_rates,PFRWB,0.999983622797969,5,21,0.8
+indicators_as_rates,PFRMA,0.9999736354087767,10,28,0.8
