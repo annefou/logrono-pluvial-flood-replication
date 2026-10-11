@@ -21,9 +21,9 @@
 # | Component | Source | Licence |
 # |---|---|---|
 # | Hazard | REACHOUT pluvial flood maps for Logroño, Staccione and Pal (2024), Zenodo [10.5281/zenodo.14035876](https://doi.org/10.5281/zenodo.14035876) — cited by Vogelbacher et al. (2026, Sect. 4.3.2) as a basis for transfer | CC BY 4.0 |
-# | Buildings | Spanish Cadastre, INSPIRE Buildings, municipality 26900 (Logroño), ATOM bulk download | CC BY 4.0 |
-# | Street area | Spanish Cadastre, INSPIRE Cadastral Parcels (cadastral zoning = urban blocks) | CC BY 4.0 |
-| Street names (locating reported impacts) | Spanish Cadastre, INSPIRE Addresses (address points + thoroughfare names) | CC BY 4.0 |
+# | Buildings | Spanish Cadastre, INSPIRE Buildings, municipality 26900 (Logroño), ATOM bulk download | Catastro INSPIRE licence of access and use (DG del Catastro, v1.0, 2016): use, including commercial, of transformed data; original files not redistributed; derived products not presented as cadastral information |
+# | Street area | Spanish Cadastre, INSPIRE Cadastral Parcels (cadastral zoning = urban blocks) | Catastro INSPIRE licence of access and use (DG del Catastro, v1.0, 2016): use, including commercial, of transformed data; original files not redistributed; derived products not presented as cadastral information |
+| Street names (locating reported impacts) | Spanish Cadastre, INSPIRE Addresses (address points + thoroughfare names) | Catastro INSPIRE licence of access and use (DG del Catastro, v1.0, 2016): use, including commercial, of transformed data; original files not redistributed; derived products not presented as cadastral information |
 # | Social vulnerability | INE, Censo de Población y Viviendas 2021, indicators per sección censal + section boundaries (01/01/2021) | INE terms (reuse with attribution) |
 | Water mask | Copernicus EU-Hydro River Network Database v1.3, [10.2909/393359a7-7ebd-4a52-80ac-1a18d5f3db9c](https://doi.org/10.2909/393359a7-7ebd-4a52-80ac-1a18d5f3db9c) — river surfaces and inland water | Copernicus (free, full and open) |
 | Streets (robustness check) | Copernicus Urban Atlas 2018, FUA ES018L2 Logroño, [10.2909/9911fe21-57f6-46fb-ae26-d76e7bb6378f](https://doi.org/10.2909/9911fe21-57f6-46fb-ae26-d76e7bb6378f) | Copernicus (free, full and open) |

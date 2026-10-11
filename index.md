@@ -39,7 +39,7 @@ No credentials are needed. A fresh clone regenerates every result table and figu
 
 ## Credits
 
-Paper and method: Anastasia Vogelbacher, Malte von Szombathely, Marc Lennartz, Benjamin Poschlod, Jana Sillmann. Flood maps: Andrea Staccione, Jeremy S. Pal (REACHOUT, CC BY 4.0). Buildings, parcels and addresses: Dirección General del Catastro (CC BY 4.0). Census: Instituto Nacional de Estadística. Urban Atlas: European Environment Agency (Copernicus Land Monitoring Service). Impact places without an address: © OpenStreetMap contributors (ODbL). Replication and `building-climate-risk`: Anne Fouilloux (LifeWatch ERIC).
+Paper and method: Anastasia Vogelbacher, Malte von Szombathely, Marc Lennartz, Benjamin Poschlod, Jana Sillmann. Flood maps: Andrea Staccione, Jeremy S. Pal (REACHOUT, CC BY 4.0). Buildings, parcels and addresses: derived from data of the Dirección General del Catastro (Catastro INSPIRE licence of access and use, 2016; the original files are not redistributed). Census: Instituto Nacional de Estadística. Urban Atlas: European Environment Agency (Copernicus Land Monitoring Service). Impact places without an address: © OpenStreetMap contributors (ODbL). Replication and `building-climate-risk`: Anne Fouilloux (LifeWatch ERIC).
 
 ## Nanopublication chain
 
